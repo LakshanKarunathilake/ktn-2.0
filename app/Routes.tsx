@@ -11,6 +11,7 @@ export default function Routes() {
       <Switch>
         <Route path={routes.SIGNUP} component={SignupPage} />
         <Route path={routes.LOGIN} component={LoginPage} />
+        <Route path={routes.HOME} component={LoginPage} />
       </Switch>
     </App>
   );
