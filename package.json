@@ -101,14 +101,6 @@
       "private": false
     }
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LakshanKarunathilake/ktn-2.0.git"
-  },
-  "author": {
-    "name":"Lakshan Karunathilake",
-    "email": "manualsplash@gmail.com"
-  },
   "license": "MIT",
   "jest": {
     "testURL": "http://localhost/",
