@@ -13,6 +13,7 @@ import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
+import * as models from '../db/Models/index';
 
 export default class AppUpdater {
   constructor() {
@@ -47,6 +48,17 @@ const installExtensions = async () => {
 };
 
 const createWindow = async () => {
+  // Connecting to Databasee
+  models.sequelize
+    .sync()
+    // eslint-disable-next-line promise/always-return
+    .then(() => {
+      console.log('======Database Sync Successful=====');
+    })
+    .catch((e: any) => {
+      console.log('====Error caught while sync in Database====\n', e);
+    });
+
   if (
     process.env.NODE_ENV === 'development' ||
     process.env.DEBUG_PROD === 'true'
