@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
   );
   Invoice.associate = function(models) {
     // associations can be defined here
-    Invoice.belongsTo(models.Customer);
+    Invoice.belongsTo(models.Customer, {
+      foreignKey: 'customerId',
+      onUpdate: 'CASCADE'
+    });
   };
   return Invoice;
 };
