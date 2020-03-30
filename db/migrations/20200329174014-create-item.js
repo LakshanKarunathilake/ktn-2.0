@@ -11,8 +11,9 @@ module.exports = {
       category: {
         type: Sequelize.STRING,
         references: {
-          model: 'Category',
-          key: 'name'
+          model: 'Categories',
+          key: 'name',
+          as: 'category'
         },
         onUpdate: 'CASCADE'
       },

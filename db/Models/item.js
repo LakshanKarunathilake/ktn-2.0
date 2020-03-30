@@ -3,14 +3,6 @@ module.exports = (sequelize, DataTypes) => {
     'Item',
     {
       code: { type: DataTypes.STRING, unique: true },
-      category: {
-        type: DataTypes.STRING,
-        references: {
-          model: 'Category',
-          key: 'name'
-        },
-        onUpdate: 'CASCADE'
-      },
       vehicle: { type: DataTypes.STRING, allowNull: true },
       brand: { type: DataTypes.STRING, allowNull: true },
       description: { type: DataTypes.STRING },
@@ -24,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   );
   Item.associate = function(models) {
     // associations can be defined here
+    Item.belongsTo(models.Category, {
+      foreignKey: 'category',
+      onUpdate: 'CASCADE'
+    });
   };
   return Item;
 };
