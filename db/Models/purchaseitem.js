@@ -11,8 +11,14 @@ module.exports = (sequelize, DataTypes) => {
   );
   PurchaseItem.associate = function(models) {
     // associations can be defined here
-    PurchaseItem.belongsTo(models.Item);
-    PurchaseItem.belongsTo(models.Purchase);
+    PurchaseItem.belongsTo(models.Item, {
+      foreignKey: 'itemCode',
+      onUpdate: 'CASCADE'
+    });
+    PurchaseItem.belongsTo(models.Purchase,{
+      foreignKey: 'billNumber',
+      onUpdate: 'CASCADE'
+    });
   };
   return PurchaseItem;
 };

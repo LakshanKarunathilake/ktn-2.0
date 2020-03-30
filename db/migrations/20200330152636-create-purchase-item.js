@@ -19,6 +19,24 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      itemCode: {
+        type: Sequelize.STRING,
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'Items',
+          key: 'code',
+          as: 'itemCode'
+        }
+      },
+      billNumber: {
+        type: Sequelize.STRING,
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'Purchases',
+          key: 'number',
+          as: 'billNumber'
+        }
       }
     });
   },
