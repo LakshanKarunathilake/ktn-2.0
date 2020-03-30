@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Purchases', {
@@ -8,9 +7,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        type: Sequelize.STRING
-      },
+      number: { type: Sequelize.STRING, allowNull: false, unique: true },
+      date: { type: Sequelize.DATEONLY, allowNull: false },
+      total: { type: Sequelize.DECIMAL(10, 2), allowNull: false },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -18,6 +17,15 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      companyId: {
+        type: Sequelize.STRING,
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'Companies',
+          key: 'id',
+          as: 'companyId'
+        }
       }
     });
   },
