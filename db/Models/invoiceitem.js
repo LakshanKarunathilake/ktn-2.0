@@ -2,7 +2,15 @@ module.exports = (sequelize, DataTypes) => {
   const InvoiceItem = sequelize.define(
     'InvoiceItem',
     {
-      code: { type: DataTypes.STRING, allowNull: false },
+      code: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        references: {
+          model: 'Item',
+          key: 'code'
+        },
+        onUpdate: 'CASCADE'
+      },
       qty: { type: DataTypes.DECIMAL(4, 2), allowNull: false },
       selling: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
       returned: { type: DataTypes.DECIMAL(4, 2), allowNull: false }

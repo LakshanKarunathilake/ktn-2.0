@@ -7,7 +7,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      code: { type: Sequelize.STRING, allowNull: false },
+      code: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        references: {
+          model: 'Item',
+          key: 'code'
+        },
+        onUpdate: 'CASCADE'
+      },
       qty: { type: Sequelize.DECIMAL(4, 2), allowNull: false },
       selling: { type: Sequelize.DECIMAL(10, 2), allowNull: false },
       returned: { type: Sequelize.DECIMAL(4, 2), allowNull: false },
