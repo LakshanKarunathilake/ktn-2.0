@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('PurchaseItems', {
@@ -8,9 +7,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        type: Sequelize.STRING
-      },
+
+      qty: { type: Sequelize.DECIMAL(4, 2), allowNull: false },
+      bill: { type: Sequelize.DECIMAL(10, 2), allowNull: false },
+      cost: { type: Sequelize.DECIMAL(10, 2), allowNull: false },
+      selling: { type: Sequelize.DECIMAL(10, 2), allowNull: false },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
