@@ -13,7 +13,10 @@ module.exports = (sequelize, DataTypes) => {
   );
   Payment.associate = function(models) {
     // associations can be defined here
-    Payment.belongsTo(models.Inovice);
+    Payment.belongsTo(models.Inovice, {
+      foreignKey: 'invoiceId',
+      onUpdate: 'CASCADE'
+    });
   };
   return Payment;
 };
