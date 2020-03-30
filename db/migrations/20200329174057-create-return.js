@@ -8,9 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        type: Sequelize.STRING
-      },
+      qty: { type: Sequelize.DECIMAL(4, 2), allowNull: false },
+      unit: { type: Sequelize.DECIMAL(10, 2), allowNull: false },
+      reason: { type: Sequelize.STRING, allowNull: false },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
