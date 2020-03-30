@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Payments', {
@@ -8,9 +7,12 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
-        type: Sequelize.STRING
-      },
+      paidDate: { type: Sequelize.TIMESTAMP, allowNull: false },
+      type: { type: Sequelize.STRING, allowNull: false },
+      bank: { type: Sequelize.STRING },
+      chequeDate: { type: Sequelize.STRING },
+      chequeNumber: { type: Sequelize.STRING },
+      amount: { type: Sequelize.STRING },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
