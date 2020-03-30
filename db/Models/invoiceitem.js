@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         references: {
-          model: 'Item',
+          model: 'Items',
           key: 'code'
         },
         onUpdate: 'CASCADE'
