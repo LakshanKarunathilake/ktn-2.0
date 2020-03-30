@@ -26,6 +26,15 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      invoiceId: {
+        type: Sequelize.STRING,
+        onUpdate: 'CASCADE',
+        references: {
+          model: 'Invoices',
+          key: 'invoice',
+          as: 'invoiceId'
+        }
       }
     });
   },
