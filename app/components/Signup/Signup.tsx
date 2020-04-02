@@ -108,6 +108,17 @@ export default function SignUp() {
               />
             </Grid>
             <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="adminPassword"
+                label="Admin Password"
+                type="password"
+                id="password"
+              />
+            </Grid>
+            <Grid item xs={12}>
               <FormControlLabel
                 control={<Checkbox value="allowExtraEmails" color="primary" />}
                 label="I want to receive inspiration, marketing promotions and updates via email."
