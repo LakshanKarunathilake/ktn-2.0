@@ -4,3 +4,9 @@ export interface SignupView {
   contact: string;
   adminPassword: string;
 }
+export interface UserFormView {
+  username: string;
+  password: string;
+}
+
+
