@@ -5,9 +5,10 @@ import { updateSignup } from '../actions/user';
 import { counterStateType } from '../reducers/types';
 
 function mapStateToProps(state: counterStateType) {
-  const { counter,name } = state;
+  const { counter, name } = state;
   return {
-    counter,name
+    counter,
+    name
   };
 }
 
