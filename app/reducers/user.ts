@@ -1,17 +1,34 @@
 import { AnyAction } from 'redux';
-import { UPDATE_SIGNUP, LOGIN_USER } from '../actions/user';
+import { SignupView } from '../models/User';
 
-export default function user(
-  state = { key: 'name', value: '' },
+export default function signupForm(
+  state: SignupView = {
+    username: '',
+    adminPassword: '',
+    password: '',
+    contact: ''
+  },
   action: AnyAction
 ) {
-  const { key, value } = action;
+  console.log('state', state, action);
+  let temp;
   switch (action.type) {
-    case UPDATE_SIGNUP:
-      state[key] = value;
-      return state;
-    case LOGIN_USER:
-      return state + 1;
+    case 'UPDATE_USERNAME':
+      temp = { ...state };
+      temp.username = action.value;
+      return temp;
+    case 'UPDATE_PASSWORD':
+      temp = { ...state };
+      temp.password = action.value;
+      return temp;
+    case 'UPDATE_ADMINPASSWORD':
+      temp = { ...state };
+      temp.adminPassword = action.value;
+      return temp;
+    case 'UPDATE_CONTACT':
+      temp = { ...state };
+      temp.contact = action.value;
+      return temp;
     default:
       return state;
   }
