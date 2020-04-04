@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
-import { SignupView } from '../models/User';
+import { SignupView, UserFormView } from '../models/User';
 
-export default function signupForm(
+export const signupForm = (
   state: SignupView = {
     username: '',
     adminPassword: '',
@@ -9,7 +9,7 @@ export default function signupForm(
     contact: ''
   },
   action: AnyAction
-) {
+) => {
   console.log('state', state, action);
   let temp;
   switch (action.type) {
@@ -32,4 +32,27 @@ export default function signupForm(
     default:
       return state;
   }
-}
+};
+
+export const loginForm = (
+  state: UserFormView = {
+    username: '',
+    password: ''
+  },
+  action: AnyAction
+) => {
+  console.log('state', state, action);
+  let temp;
+  switch (action.type) {
+    case 'UPDATE_USERNAME':
+      temp = { ...state };
+      temp.username = action.value;
+      return temp;
+    case 'UPDATE_PASSWORD':
+      temp = { ...state };
+      temp.password = action.value;
+      return temp;
+    default:
+      return state;
+  }
+};
