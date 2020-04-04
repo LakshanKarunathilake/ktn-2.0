@@ -46,9 +46,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function SignUp() {
-  const classes = useStyles();
+interface PropType {
+  updateSignup: (key: string, value: string) => void;
+  name: string;
+  counter: number;
+}
 
+export default function SignUp(props: PropType) {
+  const classes = useStyles();
+  console.log('props', props);
+
+  const { updateSignup } = props;
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -61,27 +69,34 @@ export default function SignUp() {
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
+                name="username"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="username"
+                label="User name"
                 autoFocus
+                onChange={(event: any) => {
+                  console.log('val', event.target.value);
+                  updateSignup('username', event.target.value);
+                }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
+                name="contact"
                 variant="outlined"
                 required
                 fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
+                id="contact"
+                label="Contact number"
+                autoFocus
+                onChange={(event: any) => {
+                  console.log('val', event.target.value);
+                  updateSignup('contact', event.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -89,28 +104,29 @@ export default function SignUp() {
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
+                id="password"
                 label="Password"
                 type="password"
-                id="password"
-                autoComplete="current-password"
+                name="password"
+                onChange={(event: any) => {
+                  console.log('val', event.target.value);
+                  updateSignup('password', event.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="adminPassword"
+                label="Admin Password"
+                type="password"
+                id="adminPassword"
+                onChange={(event: any) => {
+                  console.log('val', event.target.value);
+                  updateSignup('adminPassword', event.target.value);
+                }}
               />
             </Grid>
           </Grid>

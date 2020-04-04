@@ -10,9 +10,9 @@ export default function Routes() {
   return (
     <App>
       <Switch>
-        <Route path={routes.SIGNUP} component={HomePage} />
+        <Route path={routes.SIGNUP} component={SignupPage} />
         <Route path={routes.LOGIN} component={LoginPage} />
-        <Route path={routes.HOME} component={SignupPage} />
+        <Route path={routes.HOME} component={HomePage} />
       </Switch>
     </App>
   );

@@ -1,0 +1,6 @@
+{
+  "administrator": { "name": "ADMIN", "password": "puma" },
+  "database": {
+    "runQueries": false
+  }
+}

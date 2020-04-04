@@ -1,6 +1,24 @@
-import React from 'react';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import SignUp from '../components/Signup/Signup';
+import { updateSignup } from '../actions/user';
+import { counterStateType } from '../reducers/types';
 
-export default function SignupPage() {
-  return <SignUp />;
+function mapStateToProps(state: counterStateType) {
+  const { counter, name } = state;
+  return {
+    counter,
+    name
+  };
 }
+
+function mapDispatchToProps(dispatch: Dispatch) {
+  return bindActionCreators(
+    {
+      updateSignup
+    },
+    dispatch
+  );
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
