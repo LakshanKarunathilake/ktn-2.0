@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import routes from '../../constants/routes.json';
+import { LoginView } from '../../models/User';
 
 function Copyright() {
   return (
@@ -44,9 +45,17 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function Login() {
-  const classes = useStyles();
+const loginAction = (loginView: LoginView) => {
+  console.log('login clicked', loginView);
+};
 
+export default function Login(props: {
+  updateForm: (key: string, value: string, form: string) => void;
+  loginForm: LoginView;
+}) {
+  console.log('props', props);
+  const { updateForm, loginForm } = props;
+  const classes = useStyles();
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -63,11 +72,13 @@ export default function Login() {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id="username"
+            label="Username"
+            name="username"
             autoFocus
+            onChange={(event: any) => {
+              updateForm('username', event.target.value, 'LOGIN');
+            }}
           />
           <TextField
             variant="outlined"
@@ -79,22 +90,23 @@ export default function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={(event: any) => {
+              updateForm('password', event.target.value, 'LOGIN');
+            }}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
           />
-          <Link to={routes.HOME}>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Sign In
-            </Button>
-          </Link>
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+            onClick={() => loginAction(loginForm)}
+          >
+            Sign In
+          </Button>
 
           <Grid container>
             <Grid item xs>

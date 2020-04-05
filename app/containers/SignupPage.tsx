@@ -1,21 +1,21 @@
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import SignUp from '../components/Signup/Signup';
-import { updateSignup } from '../actions/user';
-import { counterStateType } from '../reducers/types';
+import { updateForm } from '../actions/user';
+import { inventoryStoreType } from '../reducers/types';
 
-function mapStateToProps(state: counterStateType) {
-  const { counter, name } = state;
+function mapStateToProps(state: inventoryStoreType) {
+  console.log('state', state);
+  const { signupForm } = state;
   return {
-    counter,
-    name
+    signupForm
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch) {
   return bindActionCreators(
     {
-      updateSignup
+      updateForm
     },
     dispatch
   );
