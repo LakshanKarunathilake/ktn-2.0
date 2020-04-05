@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -46,17 +44,15 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-interface PropType {
-  updateSignup: (key: string, value: string) => void;
+export default function SignUp(props: {
+  updateForm: (key: string, value: string, form: string) => void;
   name: string;
   counter: number;
-}
-
-export default function SignUp(props: PropType) {
+}) {
   const classes = useStyles();
   console.log('props', props);
 
-  const { updateSignup } = props;
+  const { updateForm } = props;
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -79,8 +75,7 @@ export default function SignUp(props: PropType) {
                 label="User name"
                 autoFocus
                 onChange={(event: any) => {
-                  console.log('val', event.target.value);
-                  updateSignup('username', event.target.value);
+                  updateForm('username', event.target.value, 'SIGNUP');
                 }}
               />
             </Grid>
@@ -94,8 +89,7 @@ export default function SignUp(props: PropType) {
                 label="Contact number"
                 autoFocus
                 onChange={(event: any) => {
-                  console.log('val', event.target.value);
-                  updateSignup('contact', event.target.value);
+                  updateForm('contact', event.target.value, 'SIGNUP');
                 }}
               />
             </Grid>
@@ -109,8 +103,7 @@ export default function SignUp(props: PropType) {
                 type="password"
                 name="password"
                 onChange={(event: any) => {
-                  console.log('val', event.target.value);
-                  updateSignup('password', event.target.value);
+                  updateForm('password', event.target.value, 'SIGNUP');
                 }}
               />
             </Grid>
@@ -124,8 +117,7 @@ export default function SignUp(props: PropType) {
                 type="password"
                 id="adminPassword"
                 onChange={(event: any) => {
-                  console.log('val', event.target.value);
-                  updateSignup('adminPassword', event.target.value);
+                  updateForm('adminPassword', event.target.value, 'SIGNUP');
                 }}
               />
             </Grid>
