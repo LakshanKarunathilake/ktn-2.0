@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import routes from '../../constants/routes.json';
 import { LoginView } from '../../models/User';
+import swal from 'sweetalert';
 
 function Copyright() {
   return (
@@ -47,6 +48,7 @@ const useStyles = makeStyles(theme => ({
 
 const loginAction = (loginView: LoginView) => {
   console.log('login clicked', loginView);
+  swal('HelloWorld')
 };
 
 export default function Login(props: {
