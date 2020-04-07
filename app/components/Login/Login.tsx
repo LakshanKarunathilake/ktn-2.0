@@ -12,9 +12,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import swal from 'sweetalert';
 import routes from '../../constants/routes.json';
 import { LoginView } from '../../models/User';
-import swal from 'sweetalert';
 
 function Copyright() {
   return (
