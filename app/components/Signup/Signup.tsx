@@ -50,7 +50,6 @@ export default function SignUp(props: {
   counter: number;
 }) {
   const classes = useStyles();
-  console.log('props', props);
 
   const { updateForm } = props;
   return (
