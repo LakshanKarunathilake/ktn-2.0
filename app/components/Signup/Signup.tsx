@@ -10,6 +10,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import UserService from '../../services/user';
+import { SignupView } from '../../models/User';
 
 function Copyright() {
   return (
@@ -46,12 +48,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function SignUp(props: {
   updateForm: (key: string, value: string, form: string) => void;
-  name: string;
-  counter: number;
+  signupForm: SignupView;
 }) {
   const classes = useStyles();
+  const { updateForm, signupForm } = props;
+  const registerUser = () => {
+    UserService.createUser(signupForm);
+  };
 
-  const { updateForm } = props;
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -122,11 +126,11 @@ export default function SignUp(props: {
             </Grid>
           </Grid>
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={registerUser}
           >
             Sign Up
           </Button>
