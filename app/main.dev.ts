@@ -50,6 +50,10 @@ const installExtensions = async () => {
 
 const createWindow = async () => {
   // Connecting to Databasee
+
+  global.sharedObject = {
+    sequelize: models.sequelize
+  };
   if (database.runQueries) {
     models.sequelize
       .sync()
