@@ -1,6 +1,6 @@
+import crypto from 'crypto';
 import { SignupView } from '../models/User';
 import DBService from './db';
-import crypto from 'crypto';
 
 class UserService {
   static createUser(user: SignupView) {
@@ -9,15 +9,9 @@ class UserService {
     const password = crypto
       .pbkdf2Sync(user.password, salt, 1000, 64, `sha512`)
       .toString(`hex`);
-    sequelize
+    return sequelize
       .model('User')
-      .create({ name: user.username, password, type: 1, salt })
-      .then((users: any) => {
-        console.log('user', users);
-      })
-      .catch((e: any) => {
-        console.log('error', e);
-      });
+      .create({ name: user.username, password, type: 1, salt });
   }
 
   static loginUser(username: string, password: string) {}
