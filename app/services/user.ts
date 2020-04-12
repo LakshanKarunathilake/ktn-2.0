@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { SignupView } from '../models/User';
+import { LoginView, SignupView } from '../models/User';
 import DBService from './db';
 
 class UserService {
@@ -14,7 +14,25 @@ class UserService {
       .create({ name: user.username, password, type: 1, salt });
   }
 
-  static loginUser(username: string, password: string) {}
+  static loginUser(user: LoginView) {
+    const { password, username } = user;
+    const sequelize = DBService.getSequelize();
+    return new Promise((resolve, reject) => {
+      sequelize
+        .model('User')
+        .findOne({ where: { name: username } })
+        .then(user => {
+          console.log('user', password, user.get('password'));
+          const hash = crypto
+            .pbkdf2Sync(password, user.get('salt'), 1000, 64, `sha512`)
+            .toString(`hex`);
+          resolve(user.get('password') === hash);
+        })
+        .catch(e => {
+          reject(e);
+        });
+    });
+  }
 }
 
 export default UserService;
