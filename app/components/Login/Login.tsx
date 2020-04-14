@@ -60,14 +60,13 @@ export default function Login(props: {
     UserService.loginUser(loginView)
       .then(logged => {
         if (logged) {
-          swal('Login', 'You have successfully logged in', 'success');
           history.push('/home');
-        } else {
-          swal('Login', 'Check your username and password again', 'error');
+          return swal('Login', 'You have successfully logged in', 'success');
         }
+        return swal('Login', 'Check your username and password again', 'error');
       })
-      .catch(e => {
-        console.log('error');
+      .catch((e: any) => {
+        console.log('error', e);
       });
   };
 
