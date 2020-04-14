@@ -10,32 +10,13 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
-import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
+import { Route, Switch } from 'react-router-dom';
 import { mainListItems, secondaryListItems } from './ListComponent';
-import { Switch } from 'react-router';
-import { Route } from 'react-router-dom';
-import routes from '../../constants/routes.json';
-import SignupPage from '../../containers/SignupPage';
-import HomePage from '../../containers/HomePage';
-import ItemAdd from '../../containers/ItemAdd';
 import CustomerAdd from '../../containers/CustomerAdd';
-import LoginPage from '../../containers/LoginPage';
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import ItemAdd from '../../containers/ItemAdd';
 
 const drawerWidth = 240;
 
@@ -183,8 +164,8 @@ export default function Home(props: any) {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Switch>
-          <Route path={routes.ITEM} component={ItemAdd} />
-          <Route path={routes.CUSTOMER} component={CustomerAdd} />
+          <Route path="/home/item" component={ItemAdd} />
+          <Route path="/home/customer" component={CustomerAdd} />
         </Switch>
       </main>
     </div>
