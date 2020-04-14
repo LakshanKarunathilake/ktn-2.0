@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 import swal from 'sweetalert';
 import routes from '../../constants/routes.json';
 import { LoginView } from '../../models/User';
+import UserService from '../../services/user';
 
 function Copyright() {
   return (
@@ -46,18 +47,29 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const loginAction = (loginView: LoginView) => {
-  console.log('login clicked', loginView);
-  swal('HelloWorld')
-};
-
 export default function Login(props: {
   updateForm: (key: string, value: string, form: string) => void;
   loginForm: LoginView;
+  history: any;
 }) {
   console.log('props', props);
-  const { updateForm, loginForm } = props;
+  const { updateForm, loginForm, history } = props;
   const classes = useStyles();
+
+  const loginAction = (loginView: LoginView) => {
+    UserService.loginUser(loginView)
+      .then(logged => {
+        if (logged) {
+          history.push('/home');
+          return swal('Login', 'You have successfully logged in', 'success');
+        }
+        return swal('Login', 'Check your username and password again', 'error');
+      })
+      .catch((e: any) => {
+        console.log('error', e);
+      });
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

@@ -10,6 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import swal from 'sweetalert';
 import UserService from '../../services/user';
 import { SignupView } from '../../models/User';
 
@@ -53,7 +54,17 @@ export default function SignUp(props: {
   const classes = useStyles();
   const { updateForm, signupForm } = props;
   const registerUser = () => {
-    UserService.createUser(signupForm);
+    UserService.createUser(signupForm)
+      .then(() => {
+        return swal(
+          'User Registration',
+          'You have successfully registered the user',
+          'success'
+        );
+      })
+      .catch(() => {
+        return swal('User Registration', 'User registration failed', 'error');
+      });
   };
 
   return (
