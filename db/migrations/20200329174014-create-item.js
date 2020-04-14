@@ -11,7 +11,7 @@ module.exports = {
       category: {
         type: Sequelize.STRING,
         references: {
-          model: 'Categories',
+          model: 'Category',
           key: 'name',
           as: 'category'
         },
