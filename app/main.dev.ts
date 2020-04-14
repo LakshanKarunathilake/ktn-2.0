@@ -56,7 +56,7 @@ const createWindow = async () => {
   };
   if (database.runQueries) {
     models.sequelize
-      .sync()
+      .sync({ force: true })
       // eslint-disable-next-line promise/always-return
       .then(() => {
         console.log('======Database Sync Successful=====');
