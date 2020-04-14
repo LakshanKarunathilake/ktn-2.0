@@ -2,7 +2,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { updateForm } from '../actions/user';
 import { inventoryStoreType } from '../reducers/types';
-import ItemAdd from '../components/Item/ItemAdd';
+import CustomerAdd from '../components/Customer/CustomerAdd';
 
 function mapStateToProps(state: inventoryStoreType) {
   console.log('login state', state);
@@ -21,4 +21,4 @@ function mapDispatchToProps(dispatch: Dispatch) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ItemAdd);
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerAdd);
