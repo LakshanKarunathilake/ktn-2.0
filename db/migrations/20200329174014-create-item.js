@@ -20,7 +20,7 @@ module.exports = {
       vehicle: { type: Sequelize.STRING, allowNull: true },
       brand: { type: Sequelize.STRING, allowNull: true },
       description: { type: Sequelize.STRING },
-      stock: { type: Sequelize.DECIMAL(4, 2) },
+      stock: { type: Sequelize.DECIMAL(10, 2) },
       cost: { type: Sequelize.DECIMAL(10, 2) },
       selling: { type: Sequelize.DECIMAL(10, 2) },
       location: { type: Sequelize.STRING },
