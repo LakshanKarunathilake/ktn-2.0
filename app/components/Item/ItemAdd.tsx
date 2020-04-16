@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Card,
   TextField,
@@ -12,10 +12,19 @@ import {
   Button
 } from '@material-ui/core';
 
+import ItemService from '../../services/item';
+
 const ItemAdd = () => {
+  useEffect(() => {
+    ItemService.getCategories().then(value => {
+      value.forEach(v => {
+        console.log('name', v.name);
+      });
+    });
+  });
   return (
     <>
-      <div style={{ height: '60%', display: 'flex' }}>
+      <div style={{ display: 'flex' }}>
         <Card
           variant="outlined"
           style={{
