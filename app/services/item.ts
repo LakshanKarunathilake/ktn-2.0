@@ -12,6 +12,15 @@ class ItemService {
       type: QueryTypes.SELECT
     });
   }
+
+  static async getCategories() {
+    const sequelize = DBService.getSequelize();
+    let categories = [];
+    categories = await sequelize.model('Category').findAll({
+      attributes: ['name']
+    });
+    return categories;
+  }
 }
 
 export default ItemService;
