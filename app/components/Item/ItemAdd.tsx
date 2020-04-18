@@ -23,17 +23,19 @@ const ItemAdd = () => {
 
   const onItemSearch = (searchText: string) => {
     console.log('sear', searchText);
-    ItemService.getPartNumbers(searchText)
-      .then((val: any) => {
-        const updated = val.map(v => {
-          return { value: v.code };
+    if (searchText !== '') {
+      ItemService.getPartNumbers(searchText)
+        .then((val: any) => {
+          const updated = val.map(v => {
+            return { value: v.code };
+          });
+          console.log('updae', updated);
+          setCodes(updated);
+        })
+        .catch((e: any) => {
+          console.log('error', e);
         });
-        console.log('updae', updated);
-        setCodes(updated);
-      })
-      .catch((e: any) => {
-        console.log('error', e);
-      });
+    }
   };
   const onCategorySearch = (searchText: string) => {
     console.log('sear', searchText);
