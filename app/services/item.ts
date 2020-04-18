@@ -13,7 +13,16 @@ class ItemService {
     );
   }
 
-  static async getCategories() {
+  static getCategories(value: string) {
+    return sequelize.query(
+      `Select name from Categories where name like '${value}%'`,
+      {
+        type: QueryTypes.SELECT
+      }
+    );
+  }
+
+  static getItem(code: string) {
     return sequelize.model('Category').findAll({
       attributes: ['name']
     });
