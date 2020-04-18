@@ -97,8 +97,15 @@ const ItemAdd = () => {
                 fullWidth
                 disabled={formDisabled}
               />
+            </Box>{' '}
+            <Box p={2}>
+              <TextField
+                id="standard-basic"
+                label="Brand"
+                fullWidth
+                disabled={formDisabled}
+              />
             </Box>
-
             <Box p={2}>
               <TextField
                 id="standard-basic"
