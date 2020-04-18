@@ -16,7 +16,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Route, Switch } from 'react-router-dom';
 import { mainListItems, secondaryListItems } from './ListComponent';
 import CustomerAdd from '../../containers/CustomerAdd';
-import ItemAdd from '../Item/ItemAdd';
+import ItemAdd from '../../containers/ItemAdd';
 
 const drawerWidth = 240;
 
