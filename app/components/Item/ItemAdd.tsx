@@ -13,12 +13,13 @@ import {
 } from '@material-ui/core';
 import { AutoComplete } from 'antd';
 import ItemService from '../../services/item';
+import { Item } from '../../models/Item';
 
 const ItemAdd = () => {
   const [codes, setCodes] = useState<{ value: string }[]>([]);
   const [categories, setCategories] = useState<{ value: string }[]>([]);
   const [formDisabled, setFormDisable] = useState(true);
-  const [item, setItem] = useState();
+  const [item, setItem] = useState<Item>();
 
   const onItemSearch = (searchText: string) => {
     console.log('sear', searchText);
@@ -49,8 +50,28 @@ const ItemAdd = () => {
       });
   };
 
-  const onCodeSelect = (itemCode: string) => {
+  const onCodeSelect = async (itemCode: string) => {
     setFormDisable(false);
+    const {
+      code,
+      description,
+      brand,
+      vehicle,
+      unit,
+      location,
+      category
+    } = await ItemService.getItem(itemCode);
+    const itemValues: Item = {
+      code,
+      description,
+      brand,
+      vehicle,
+      unit,
+      location: location ? location : '',
+      category
+    };
+    console.log('item', itemValues);
+    setItem(itemValues);
   };
   const onCategorySelect = (itemCode: string) => {
     setFormDisable(false);
@@ -88,6 +109,7 @@ const ItemAdd = () => {
                 onSearch={onCategorySearch}
                 placeholder="Category"
                 disabled={formDisabled}
+                value={item ? item.category : ''}
               />
             </Box>
             <Box p={2}>
@@ -96,6 +118,7 @@ const ItemAdd = () => {
                 label="Vehicle"
                 fullWidth
                 disabled={formDisabled}
+                value={item ? item.vehicle : ''}
               />
             </Box>{' '}
             <Box p={2}>
@@ -104,6 +127,7 @@ const ItemAdd = () => {
                 label="Brand"
                 fullWidth
                 disabled={formDisabled}
+                value={item ? item.brand : ''}
               />
             </Box>
             <Box p={2}>
@@ -112,7 +136,8 @@ const ItemAdd = () => {
                 fullWidth
                 variant="outlined"
                 disabled
-                value={'Description value will be auto generated'}
+                placeholder={'Description value will be auto generated'}
+                value={item ? item.description : ''}
               />
             </Box>
             <Box p={2} style={{ width: '50%' }}>
@@ -121,6 +146,7 @@ const ItemAdd = () => {
                 value="Pcs"
                 fullWidth
                 disabled={formDisabled}
+                defaultValue={item ? item.unit : ''}
               >
                 <MenuItem value="Pcs">Pcs</MenuItem>
                 <MenuItem value="Set">Set</MenuItem>
@@ -134,6 +160,7 @@ const ItemAdd = () => {
                 label="Location"
                 fullWidth
                 disabled={formDisabled}
+                value={item ? item.location : ''}
               />
             </Box>
             <Box p={2}>
