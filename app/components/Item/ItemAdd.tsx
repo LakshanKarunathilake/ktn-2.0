@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   TextField,
@@ -11,17 +11,28 @@ import {
   CardActions,
   Button
 } from '@material-ui/core';
-
+import { AutoComplete } from 'antd';
 import ItemService from '../../services/item';
 
 const ItemAdd = () => {
-  useEffect(() => {
-    ItemService.getCategories().then(value => {
-      value.forEach(v => {
-        console.log('name', v.name);
+  const [codes, setCodes] = useState<{ value: string }[]>([]);
+  const onSearch = (searchText: string) => {
+    console.log('sear', searchText);
+    ItemService.getPartNumbers(searchText)
+      .then((val: any) => {
+        const updated = val.map(v => {
+          return { value: v.code };
+        });
+        console.log('updae', updated);
+        setCodes(updated);
+      })
+      .catch((e: any) => {
+        console.log('error', e);
       });
-    });
-  });
+  };
+  const onSelect = (data: string) => {
+    console.log('onSelect', data);
+  };
   return (
     <>
       <div style={{ display: 'flex' }}>
@@ -38,7 +49,13 @@ const ItemAdd = () => {
           />
           <CardContent>
             <Box p={2} style={{ width: '80%' }}>
-              <TextField id="standard-basic" label="Part Number" fullWidth />
+              <AutoComplete
+                options={codes}
+                style={{ width: '40vw' }}
+                onSelect={onSelect}
+                onSearch={onSearch}
+                placeholder="input here"
+              />
             </Box>
             <Box p={2} style={{ width: '40%' }}>
               <TextField id="standard-basic" label="Category" fullWidth />

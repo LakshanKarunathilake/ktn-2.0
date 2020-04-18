@@ -1,25 +1,22 @@
-import DBService from './db';
 import { QueryTypes } from 'sequelize';
+import DBService from './db';
+
+const sequelize = DBService.getSequelize();
 
 class ItemService {
-  static getPartNumbers() {
-    const sequelize = DBService.getSequelize();
-    // return sequelize.model('Item').findAll({
-    //   attributes: ['code'],
-    //   limit: 5000
-    // });
-    return sequelize.query('Select code from Items', {
-      type: QueryTypes.SELECT
-    });
+  static getPartNumbers(value: string) {
+    return sequelize.query(
+      `Select code from Items where code like '${value}%'`,
+      {
+        type: QueryTypes.SELECT
+      }
+    );
   }
 
   static async getCategories() {
-    const sequelize = DBService.getSequelize();
-    let categories = [];
-    categories = await sequelize.model('Category').findAll({
+    return sequelize.model('Category').findAll({
       attributes: ['name']
     });
-    return categories;
   }
 }
 
