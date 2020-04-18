@@ -22,10 +22,18 @@ class ItemService {
     );
   }
 
-  static getItem(code: string) {
-    return sequelize.model('Category').findAll({
-      attributes: ['name']
-    });
+  static async getItem(code: string) {
+    try {
+      const item = await sequelize.model('Item').findOne({
+        where: {
+          code
+        }
+      });
+      return item;
+    } catch (e) {
+      console.log('Error in getting item', e);
+    }
+    return null;
   }
 }
 
