@@ -27,7 +27,6 @@ export function updateFullForm(values: ItemAddView) {
 }
 
 export function setFormDisabled(value: boolean) {
-  console.log('callling', value);
   return (dispatch: Dispatch) => {
     dispatch({
       type: UPDATE_FROM_STATUS,
