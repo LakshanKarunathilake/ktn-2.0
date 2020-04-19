@@ -9,11 +9,27 @@ import {
   CardActions,
   Button
 } from '@material-ui/core';
-import { AutoComplete, Select, Input } from 'antd';
+import { AutoComplete, Select, Input, Form } from 'antd';
 import ItemService from '../../services/item';
 import { ItemAddView } from '../../models/User';
 
 const { Option } = Select;
+const { Item } = Form;
+
+const Tips = {
+  code:
+    'If you are adding new item make sure that doesnt exist. Use - instead of space and use CAPITAL letters',
+  category: 'Not allowed to enter new category have to use existing category',
+  vehicle: 'Applicable vehicle if exist, if vehicle is common leave it empty',
+  brand: 'Make of the item, leave empty if unknown',
+  unit:
+    'Pcs is default unit, Set is for selling a set as single, use rest for measuring items',
+  location: 'Leave empty if unknown'
+};
+
+const styleClasses = {
+  formItem: { marginTop: '15px', marginBottom: '15px' }
+};
 
 const ItemAdd = (props: {
   addItem: ItemAddView;
@@ -57,6 +73,7 @@ const ItemAdd = (props: {
         });
     }
   };
+
   const onCategorySearch = (searchText: string) => {
     console.log('sear', searchText);
     ItemService.getCategories(searchText)
@@ -115,90 +132,92 @@ const ItemAdd = (props: {
             subheader="Add new item to inventory or edit exisiting item"
           />
           <CardContent>
-            <Box p={2} style={{ width: '80%' }}>
-              <AutoComplete
-                options={codes}
-                style={{ width: '40vw' }}
-                onSelect={onCodeSelect}
-                onSearch={onItemSearch}
-                placeholder="Part number"
-                value={addItem.code}
-                onChange={(value: string) => {
-                  updateForm('code', value);
-                }}
-              />
-            </Box>
-            <Box p={2} style={{ width: '40%' }}>
-              <AutoComplete
-                options={categories}
-                style={{ width: '40vw' }}
-                onSelect={onCategorySelect}
-                onSearch={onCategorySearch}
-                placeholder="Category"
-                disabled={formDisabled}
-                allowClear
-                value={addItem.category}
-                onChange={(value: string) => {
-                  updateForm('category', value);
-                  generateDescription();
-                }}
-              />
-            </Box>
-            <Box p={2}>
-              <Input
-                placeholder="Vehicle"
-                disabled={formDisabled}
-                value={addItem.vehicle}
-                onChange={(event: any) => {
-                  updateForm('vehicle', event.target.value);
-                  generateDescription();
-                }}
-              />
-            </Box>
-            <Box p={2}>
-              <Input
-                placeholder="Brand"
-                disabled={formDisabled}
-                value={addItem.brand}
-                onChange={(event: any) => {
-                  updateForm('brand', event.target.value);
-                  generateDescription();
-                }}
-              />
-            </Box>
-            <Box p={2}>
-              <Input
-                disabled
-                placeholder="Description value will be auto generated"
-                value={addItem.description}
-              />
-            </Box>
-            <Box p={2} style={{ width: '50%' }}>
-              <Select
-                defaultValue="Pcs"
-                style={{ width: 120 }}
-                value={addItem.unit}
-                onChange={(value: any) => {
-                  updateForm('unit', value);
-                }}
-              >
-                <Option value="Pcs">Pcs</Option>
-                <Option value="Feet">Feet</Option>
-                <Option value="Set">Set</Option>
-                <Option value="Meter">Meter</Option>
-              </Select>
-            </Box>
-            <Box p={2} style={{ width: '50%' }}>
-              <Input
-                placeholder="Location"
-                disabled={formDisabled}
-                value={addItem.location}
-                onChange={(event: any) => {
-                  console.log('event', event.target.value);
-                  updateForm('location', event.target.value);
-                }}
-              />
-            </Box>
+            <Form layout="vertical">
+              <Item help={Tips.code} style={styleClasses.formItem}>
+                <AutoComplete
+                  options={codes}
+                  style={{ width: '40vw' }}
+                  onSelect={onCodeSelect}
+                  onSearch={onItemSearch}
+                  placeholder="Part number"
+                  value={addItem.code}
+                  onChange={(value: string) => {
+                    updateForm('code', value);
+                  }}
+                />
+              </Item>
+              <Item help={Tips.category} style={styleClasses.formItem}>
+                <AutoComplete
+                  options={categories}
+                  style={{ width: '40vw' }}
+                  onSelect={onCategorySelect}
+                  onSearch={onCategorySearch}
+                  placeholder="Category"
+                  disabled={formDisabled}
+                  allowClear
+                  value={addItem.category}
+                  onChange={(value: string) => {
+                    updateForm('category', value);
+                    generateDescription();
+                  }}
+                />
+              </Item>
+              <Item help={Tips.vehicle} style={styleClasses.formItem}>
+                <Input
+                  placeholder="Vehicle"
+                  disabled={formDisabled}
+                  value={addItem.vehicle}
+                  onChange={(event: any) => {
+                    updateForm('vehicle', event.target.value);
+                    generateDescription();
+                  }}
+                />
+              </Item>
+              <Item help={Tips.brand} style={styleClasses.formItem}>
+                <Input
+                  placeholder="Brand"
+                  disabled={formDisabled}
+                  value={addItem.brand}
+                  onChange={(event: any) => {
+                    updateForm('brand', event.target.value);
+                    generateDescription();
+                  }}
+                />
+              </Item>
+              <Item style={styleClasses.formItem}>
+                <Input
+                  disabled
+                  placeholder="Description value will be auto generated"
+                  value={addItem.description}
+                />
+              </Item>
+              <Item help={Tips.unit} style={styleClasses.formItem}>
+                <Select
+                  defaultValue="Pcs"
+                  style={{ width: 120 }}
+                  value={addItem.unit}
+                  onChange={(value: any) => {
+                    updateForm('unit', value);
+                  }}
+                >
+                  <Option value="Pcs">Pcs</Option>
+                  <Option value="Feet">Feet</Option>
+                  <Option value="Set">Set</Option>
+                  <Option value="Meter">Meter</Option>
+                </Select>
+              </Item>
+              <Item help={Tips.location} style={styleClasses.formItem}>
+                <Input
+                  placeholder="Location"
+                  disabled={formDisabled}
+                  value={addItem.location}
+                  onChange={(event: any) => {
+                    console.log('event', event.target.value);
+                    updateForm('location', event.target.value);
+                  }}
+                />
+              </Item>
+            </Form>
             <Box p={2}>
               <Typography>
                 Please not that by default quantity will be 0, selling price
