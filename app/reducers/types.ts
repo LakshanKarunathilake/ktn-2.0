@@ -3,12 +3,13 @@ import {
   Store as ReduxStore,
   AnyAction
 } from 'redux';
-import { LoginView, SignupView } from '../models/User';
+import { ItemAddView, LoginView, SignupView } from '../models/User';
 
 export type inventoryStoreType = {
   counter: number;
   signupForm: SignupView;
   loginForm: LoginView;
+  addItem: ItemAddView;
 };
 
 export type GetState = () => inventoryStoreType;
