@@ -5,31 +5,51 @@ import {
   CardHeader,
   CardContent,
   Box,
-  Select,
-  MenuItem,
   Typography,
   CardActions,
   Button
 } from '@material-ui/core';
-import { AutoComplete } from 'antd';
+import { AutoComplete, Select, Input } from 'antd';
 import ItemService from '../../services/item';
-import { Item } from '../../models/Item';
+import { ItemAddView } from '../../models/User';
 
-const ItemAdd = () => {
+const { Option } = Select;
+
+const ItemAdd = (props: {
+  addItem: ItemAddView;
+  formDisabled: boolean;
+  updateForm: (key: string, value: string) => void;
+  updateFullForm: (values: ItemAddView) => void;
+  setFormDisabled: (value: boolean) => void;
+}) => {
+  const {
+    updateForm,
+    addItem,
+    updateFullForm,
+    setFormDisabled,
+    formDisabled
+  } = props;
+
   const [codes, setCodes] = useState<{ value: string }[]>([]);
   const [categories, setCategories] = useState<{ value: string }[]>([]);
-  const [formDisabled, setFormDisable] = useState(true);
-  const [item, setItem] = useState<Item>();
+  const [itemInstance, setItemInstance] = useState();
+  const generateDescription = () => {
+    updateForm(
+      'description',
+      `${addItem.category} ${addItem.vehicle} - ${addItem.brand}`
+    );
+  };
+  useEffect(() => {
+    generateDescription();
+  }, [addItem.vehicle, addItem.brand, addItem.category]);
 
   const onItemSearch = (searchText: string) => {
-    console.log('sear', searchText);
     if (searchText !== '') {
       ItemService.getPartNumbers(searchText)
         .then((val: any) => {
           const updated = val.map(v => {
             return { value: v.code };
           });
-          console.log('updae', updated);
           setCodes(updated);
         })
         .catch((e: any) => {
@@ -53,7 +73,9 @@ const ItemAdd = () => {
   };
 
   const onCodeSelect = async (itemCode: string) => {
-    setFormDisable(false);
+    setFormDisabled(false);
+    const item = await ItemService.getItem(itemCode);
+    setItemInstance(item);
     const {
       code,
       description,
@@ -62,21 +84,20 @@ const ItemAdd = () => {
       unit,
       location,
       category
-    } = await ItemService.getItem(itemCode);
-    const itemValues: Item = {
+    } = item;
+    const itemValues: ItemAddView = {
       code,
       description,
       brand,
       vehicle,
       unit,
-      location: location ? location : '',
+      location: !location ? '' : location,
       category
     };
-    console.log('item', itemValues);
-    setItem(itemValues);
+    updateFullForm(itemValues);
   };
   const onCategorySelect = (itemCode: string) => {
-    setFormDisable(false);
+    setFormDisabled(false);
   };
 
   return (
@@ -101,6 +122,10 @@ const ItemAdd = () => {
                 onSelect={onCodeSelect}
                 onSearch={onItemSearch}
                 placeholder="Part number"
+                value={addItem.code}
+                onChange={(value: string) => {
+                  updateForm('code', value);
+                }}
               />
             </Box>
             <Box p={2} style={{ width: '40%' }}>
@@ -111,58 +136,67 @@ const ItemAdd = () => {
                 onSearch={onCategorySearch}
                 placeholder="Category"
                 disabled={formDisabled}
-                value={item ? item.category : ''}
+                allowClear
+                value={addItem.category}
+                onChange={(value: string) => {
+                  updateForm('category', value);
+                  generateDescription();
+                }}
               />
             </Box>
             <Box p={2}>
-              <TextField
-                id="standard-basic"
-                label="Vehicle"
-                fullWidth
+              <Input
+                placeholder="Vehicle"
                 disabled={formDisabled}
-                value={item ? item.vehicle : ''}
-              />
-            </Box>{' '}
-            <Box p={2}>
-              <TextField
-                id="standard-basic"
-                label="Brand"
-                fullWidth
-                disabled={formDisabled}
-                value={item ? item.brand : ''}
+                value={addItem.vehicle}
+                onChange={(event: any) => {
+                  updateForm('vehicle', event.target.value);
+                  generateDescription();
+                }}
               />
             </Box>
             <Box p={2}>
-              <TextField
-                id="standard-basic"
-                fullWidth
-                variant="outlined"
+              <Input
+                placeholder="Brand"
+                disabled={formDisabled}
+                value={addItem.brand}
+                onChange={(event: any) => {
+                  updateForm('brand', event.target.value);
+                  generateDescription();
+                }}
+              />
+            </Box>
+            <Box p={2}>
+              <Input
                 disabled
-                placeholder={'Description value will be auto generated'}
-                value={item ? item.description : ''}
+                placeholder="Description value will be auto generated"
+                value={addItem.description}
               />
             </Box>
             <Box p={2} style={{ width: '50%' }}>
               <Select
-                label="Unit Type"
-                value="Pcs"
-                fullWidth
-                disabled={formDisabled}
-                defaultValue={item ? item.unit : ''}
+                defaultValue="Pcs"
+                style={{ width: 120 }}
+                value={addItem.unit}
+                onChange={(value: any) => {
+                  updateForm('unit', value);
+                }}
               >
-                <MenuItem value="Pcs">Pcs</MenuItem>
-                <MenuItem value="Set">Set</MenuItem>
-                <MenuItem value="Feet">Feet</MenuItem>
-                <MenuItem value="Meeter">Meeter</MenuItem>
+                <Option value="Pcs">Pcs</Option>
+                <Option value="Feet">Feet</Option>
+                <Option value="Set">Set</Option>
+                <Option value="Meter">Meter</Option>
               </Select>
             </Box>
             <Box p={2} style={{ width: '50%' }}>
-              <TextField
-                id="standard-basic"
-                label="Location"
-                fullWidth
+              <Input
+                placeholder="Location"
                 disabled={formDisabled}
-                value={item ? item.location : ''}
+                value={addItem.location}
+                onChange={(event: any) => {
+                  console.log('event', event.target.value);
+                  updateForm('location', event.target.value);
+                }}
               />
             </Box>
             <Box p={2}>
@@ -173,8 +207,23 @@ const ItemAdd = () => {
             </Box>
           </CardContent>
           <CardActions style={{ float: 'right' }}>
-            <Button color="primary" variant="contained">
-              Save
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => {
+                console.log('saving', addItem);
+              }}
+            >
+              Add Item
+            </Button>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => {
+                console.log('saving', addItem);
+              }}
+            >
+              Edit Item
             </Button>
             <Button color="secondary" variant="contained">
               Cancel
