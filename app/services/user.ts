@@ -34,6 +34,15 @@ class UserService {
         });
     });
   }
+
+  static getUsers(name: string) {
+    return sequelize.query(
+      `Select name from Users where name like '${name}%'`,
+      {
+        type: QueryTypes.SELECT
+      }
+    );
+  }
 }
 
 export default UserService;
