@@ -4,12 +4,14 @@ import {
   AnyAction
 } from 'redux';
 import { ItemAddView, LoginView, SignupView } from '../models/User';
+import { Customer } from '../models/Customer';
 
 export type inventoryStoreType = {
   counter: number;
   signupForm: SignupView;
   loginForm: LoginView;
   addItem: ItemAddView;
+  addCustomer: Customer;
 };
 
 export type GetState = () => inventoryStoreType;
