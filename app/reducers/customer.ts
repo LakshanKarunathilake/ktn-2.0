@@ -10,7 +10,8 @@ const addCustomer = (
   state: Customer = {
     name: '',
     address: '',
-    contactNumber: ''
+    contactNumber: '',
+    note: ''
   },
   action: AnyAction
 ) => {
