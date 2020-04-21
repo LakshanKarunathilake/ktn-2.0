@@ -1,5 +1,4 @@
 import crypto from 'crypto';
-import { QueryTypes } from 'sequelize';
 import { LoginView, SignupView } from '../models/User';
 import DBService from './db';
 
