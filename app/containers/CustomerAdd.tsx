@@ -1,6 +1,6 @@
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { updateForm, updateFullForm, setFormDisabled } from '../actions/item';
+import { updateForm, updateFullForm, setFormDisabled } from '../actions/user';
 import { inventoryStoreType } from '../reducers/types';
 import CustomerAdd from '../components/Customer/CustomerAdd';
 
