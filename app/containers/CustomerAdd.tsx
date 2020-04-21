@@ -6,11 +6,11 @@ import CustomerAdd from '../components/Customer/CustomerAdd';
 
 function mapStateToProps(state: inventoryStoreType) {
   console.log('login state', state);
-  const { addItem } = state;
-  addItem.formDisabled =
-    addItem.formDisabled === undefined ? true : addItem.formDisabled;
+  const { addCustomer } = state;
+  addCustomer.formDisabled =
+    addCustomer.formDisabled === undefined ? true : addCustomer.formDisabled;
   return {
-    addItem
+    addCustomer
   };
 }
 
