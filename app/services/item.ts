@@ -53,7 +53,7 @@ class ItemService {
       .then(() => {
         return swal('Item Add', 'Item successfully added', 'success');
       })
-      .catch(e => {
+      .catch((e: any) => {
         console.log('Error in Item add', e);
         return swal('Item Add', 'Item adding failure', 'error');
       });
@@ -73,7 +73,7 @@ class ItemService {
       .then(() => {
         return swal('Item Update', 'Item successfully changed', 'success');
       })
-      .catch(e => {
+      .catch((e: any) => {
         console.log('Error in Item update', e);
         return swal('Item Update', 'Item updating failure', 'error');
       });
