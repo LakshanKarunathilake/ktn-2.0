@@ -10,6 +10,7 @@ module.exports = {
       name: { type: Sequelize.STRING, allowNull: false },
       address: { type: Sequelize.STRING, allowNull: false },
       contactNumber: { type: Sequelize.STRING, allowNull: false },
+      note: { type: Sequelize.STRING },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
