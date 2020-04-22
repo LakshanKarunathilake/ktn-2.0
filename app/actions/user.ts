@@ -1,4 +1,6 @@
 import { Dispatch } from '../reducers/types';
+import { ItemAddView } from '../models/User';
+import { UPDATE_FROM_STATUS, UPDATE_FULL_FORM } from './item';
 
 export const EDIT_USER = 'EDIT_USER';
 export const LOGIN_USER = 'LOGIN_USER';

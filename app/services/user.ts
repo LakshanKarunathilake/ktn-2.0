@@ -2,9 +2,10 @@ import crypto from 'crypto';
 import { LoginView, SignupView } from '../models/User';
 import DBService from './db';
 
+const sequelize = DBService.getSequelize();
+
 class UserService {
   static createUser(user: SignupView) {
-    const sequelize = DBService.getSequelize();
     const salt = crypto.randomBytes(16).toString('hex');
     const password = crypto
       .pbkdf2Sync(user.password, salt, 1000, 64, `sha512`)
@@ -16,7 +17,6 @@ class UserService {
 
   static loginUser(user: LoginView) {
     const { password, username } = user;
-    const sequelize = DBService.getSequelize();
     return new Promise((resolve, reject) => {
       sequelize
         .model('User')

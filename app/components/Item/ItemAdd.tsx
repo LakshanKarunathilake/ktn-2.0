@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Card,
-  TextField,
   CardHeader,
   CardContent,
   Box,
@@ -10,6 +9,7 @@ import {
   Button
 } from '@material-ui/core';
 import { AutoComplete, Select, Input, Form } from 'antd';
+import swal from 'sweetalert';
 import ItemService from '../../services/item';
 import { ItemAddView } from '../../models/User';
 
@@ -31,6 +31,15 @@ const styleClasses = {
   formItem: { marginTop: '15px', marginBottom: '15px' }
 };
 
+const displayConfirmMessage = () => {
+  return swal({
+    title: 'Confirm Edit',
+    text: 'Once deleted, you will not be able to recover this imaginary file!',
+    icon: 'warning',
+    buttons: ['Cancel', 'Proceed']
+  });
+};
+
 const ItemAdd = (props: {
   addItem: ItemAddView;
   formDisabled: boolean;
@@ -49,11 +58,18 @@ const ItemAdd = (props: {
   const [codes, setCodes] = useState<{ value: string }[]>([]);
   const [categories, setCategories] = useState<{ value: string }[]>([]);
   const [itemInstance, setItemInstance] = useState();
+  const [editing, setEditing] = useState(false);
+  const [error, setErrorState] = useState({
+    category: {} as Record<string, any>
+  });
+
   const generateDescription = () => {
-    updateForm(
-      'description',
-      `${addItem.category} ${addItem.vehicle} - ${addItem.brand}`
-    );
+    if (addItem.category !== '') {
+      updateForm(
+        'description',
+        `${addItem.category} ${addItem.vehicle} - ${addItem.brand}`
+      );
+    }
   };
   useEffect(() => {
     generateDescription();
@@ -63,10 +79,10 @@ const ItemAdd = (props: {
     if (searchText !== '') {
       ItemService.getPartNumbers(searchText)
         .then((val: any) => {
-          const updated = val.map(v => {
+          const updated = val.map((v: any) => {
             return { value: v.code };
           });
-          setCodes(updated);
+          return setCodes(updated);
         })
         .catch((e: any) => {
           console.log('error', e);
@@ -89,29 +105,48 @@ const ItemAdd = (props: {
       });
   };
 
+  const clearForm = () => {
+    setFormDisabled(true);
+    setCodes([]);
+    updateFullForm({
+      code: '',
+      category: '',
+      vehicle: '',
+      brand: '',
+      description: '',
+      location: ''
+    } as ItemAddView);
+  };
+
   const onCodeSelect = async (itemCode: string) => {
-    setFormDisabled(false);
-    const item = await ItemService.getItem(itemCode);
-    setItemInstance(item);
-    const {
-      code,
-      description,
-      brand,
-      vehicle,
-      unit,
-      location,
-      category
-    } = item;
-    const itemValues: ItemAddView = {
-      code,
-      description,
-      brand,
-      vehicle,
-      unit,
-      location: !location ? '' : location,
-      category
-    };
-    updateFullForm(itemValues);
+    if ((await displayConfirmMessage()) === true) {
+      setFormDisabled(false);
+      setEditing(true);
+      const item = await ItemService.getItem(itemCode);
+      setItemInstance(item);
+      const {
+        code,
+        description,
+        brand,
+        vehicle,
+        unit,
+        location,
+        category
+      } = item;
+      const itemValues: ItemAddView = {
+        code,
+        description,
+        brand,
+        vehicle,
+        unit,
+        location: !location ? '' : location,
+        category
+      };
+      updateFullForm(itemValues);
+    } else {
+      clearForm();
+      setEditing(false);
+    }
   };
   const onCategorySelect = (itemCode: string) => {
     setFormDisabled(false);
@@ -138,6 +173,10 @@ const ItemAdd = (props: {
                   options={codes}
                   style={{ width: '40vw' }}
                   onSelect={onCodeSelect}
+                  onFocus={() => {
+                    clearForm();
+                    setEditing(false);
+                  }}
                   onSearch={onItemSearch}
                   placeholder="Part number"
                   value={addItem.code}
@@ -146,7 +185,12 @@ const ItemAdd = (props: {
                   }}
                 />
               </Item>
-              <Item help={Tips.category} style={styleClasses.formItem}>
+              <Item
+                help={error.category.msg || Tips.category}
+                style={styleClasses.formItem}
+                name="category"
+                validateStatus={error.category.validateStatus}
+              >
                 <AutoComplete
                   options={categories}
                   style={{ width: '40vw' }}
@@ -156,6 +200,31 @@ const ItemAdd = (props: {
                   disabled={formDisabled}
                   allowClear
                   value={addItem.category}
+                  onBlur={() => {
+                    console.log('blured', categories, addItem.category);
+                    if (
+                      categories
+                        .map(value => value.value)
+                        .includes(addItem.category)
+                    ) {
+                      setErrorState({
+                        ...error,
+                        category: {
+                          validateStatus: 'success',
+                          errorMsg: null
+                        }
+                      });
+                    } else {
+                      setErrorState({
+                        ...error,
+                        category: {
+                          validateStatus: 'error',
+                          errorMsg:
+                            'You have to select existing category cannot add new '
+                        }
+                      });
+                    }
+                  }}
                   onChange={(value: string) => {
                     updateForm('category', value);
                     generateDescription();
@@ -226,24 +295,29 @@ const ItemAdd = (props: {
             </Box>
           </CardContent>
           <CardActions style={{ float: 'right' }}>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => {
-                console.log('saving', addItem);
-              }}
-            >
-              Add Item
-            </Button>
-            <Button
-              color="primary"
-              variant="contained"
-              onClick={() => {
-                console.log('saving', addItem);
-              }}
-            >
-              Edit Item
-            </Button>
+            {editing ? (
+              <Button
+                color="primary"
+                variant="contained"
+                disabled={error.category.validateStatus !== 'success'}
+                onClick={() => {
+                  ItemService.editItem(itemInstance, addItem);
+                }}
+              >
+                Edit Item
+              </Button>
+            ) : (
+              <Button
+                color="primary"
+                variant="contained"
+                disabled={error.category.validateStatus !== 'success'}
+                onClick={async () => {
+                  ItemService.addItem(addItem);
+                }}
+              >
+                Add Item
+              </Button>
+            )}
             <Button color="secondary" variant="contained">
               Cancel
             </Button>

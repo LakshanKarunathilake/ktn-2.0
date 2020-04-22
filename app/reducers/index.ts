@@ -3,12 +3,14 @@ import { connectRouter } from 'connected-react-router';
 import { History } from 'history';
 import { loginForm, signupForm } from './user';
 import addItem from './item';
+import addCustomer from './customer';
 
 export default function createRootReducer(history: History) {
   return combineReducers({
     router: connectRouter(history),
     loginForm,
     signupForm,
-    addItem
+    addItem,
+    addCustomer
   });
 }
