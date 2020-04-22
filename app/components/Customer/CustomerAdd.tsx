@@ -3,28 +3,23 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Box,
-  Typography,
   CardActions,
   Button
 } from '@material-ui/core';
-import { AutoComplete, Select, Input, Form } from 'antd';
+import { AutoComplete, Input, Form } from 'antd';
 import swal from 'sweetalert';
-import ItemService from '../../services/item';
-import { ItemAddView } from '../../models/User';
+import CustomerService from '../../services/customer';
+import { Customer } from '../../models/Customer';
 
-const { Option } = Select;
+const { TextArea } = Input;
 const { Item } = Form;
 
 const Tips = {
   code:
-    'If you are adding new item make sure that doesnt exist. Use - instead of space and use CAPITAL letters',
-  category: 'Not allowed to enter new category have to use existing category',
-  vehicle: 'Applicable vehicle if exist, if vehicle is common leave it empty',
+    'If you are adding new item make sure that doesnt exist. Use CAPITAL letters',
+  address: 'Separate address lines with comma',
   brand: 'Make of the item, leave empty if unknown',
-  unit:
-    'Pcs is default unit, Set is for selling a set as single, use rest for measuring items',
-  location: 'Leave empty if unknown'
+  contact: 'Leave empty if unknown'
 };
 
 const styleClasses = {
@@ -41,48 +36,34 @@ const displayConfirmMessage = () => {
 };
 
 const CustomerAdd = (props: {
-  addItem: ItemAddView;
+  addCustomer: Customer;
   formDisabled: boolean;
   updateForm: (key: string, value: string) => void;
-  updateFullForm: (values: ItemAddView) => void;
+  updateFullForm: (values: Customer) => void;
   setFormDisabled: (value: boolean) => void;
 }) => {
   const {
     updateForm,
-    addItem,
+    addCustomer,
     updateFullForm,
     setFormDisabled,
     formDisabled
   } = props;
+  console.log('props', props);
 
-  const [codes, setCodes] = useState<{ value: string }[]>([]);
-  const [categories, setCategories] = useState<{ value: string }[]>([]);
-  const [itemInstance, setItemInstance] = useState();
+  const [names, setNames] = useState<{ value: string }[]>([]);
+  const [customerInstance, setCustomerInstance] = useState();
   const [editing, setEditing] = useState(false);
-  const [error, setErrorState] = useState({
-    category: {} as Record<string, any>
-  });
+  const [error, setErrorState] = useState(true);
 
-  const generateDescription = () => {
-    if (addItem.category !== '') {
-      updateForm(
-        'description',
-        `${addItem.category} ${addItem.vehicle} - ${addItem.brand}`
-      );
-    }
-  };
-  useEffect(() => {
-    generateDescription();
-  }, [addItem.vehicle, addItem.brand, addItem.category]);
-
-  const onItemSearch = (searchText: string) => {
+  const onUserSearch = (searchText: string) => {
     if (searchText !== '') {
-      ItemService.getPartNumbers(searchText)
+      CustomerService.getCustomers(searchText)
         .then((val: any) => {
           const updated = val.map((v: any) => {
-            return { value: v.code };
+            return { value: v.name };
           });
-          return setCodes(updated);
+          return setNames(updated);
         })
         .catch((e: any) => {
           console.log('error', e);
@@ -90,68 +71,43 @@ const CustomerAdd = (props: {
     }
   };
 
-  const onCategorySearch = (searchText: string) => {
-    console.log('sear', searchText);
-    ItemService.getCategories(searchText)
-      .then((val: any) => {
-        const updated = val.map(v => {
-          return { value: v.name };
-        });
-        console.log('updae', updated);
-        setCategories(updated);
-      })
-      .catch((e: any) => {
-        console.log('error', e);
-      });
-  };
-
   const clearForm = () => {
     setFormDisabled(true);
-    setCodes([]);
+    setNames([]);
     updateFullForm({
-      code: '',
-      category: '',
-      vehicle: '',
-      brand: '',
-      description: '',
-      location: ''
-    } as ItemAddView);
+      name: '',
+      address: '',
+      contactNumber: '',
+      note: ''
+    } as Customer);
   };
 
-  const onCodeSelect = async (itemCode: string) => {
+  const onCodeSelect = async (nameValue: string) => {
     if ((await displayConfirmMessage()) === true) {
       setFormDisabled(false);
       setEditing(true);
-      const item = await ItemService.getItem(itemCode);
-      setItemInstance(item);
-      const {
-        code,
-        description,
-        brand,
-        vehicle,
-        unit,
-        location,
-        category
-      } = item;
-      const itemValues: ItemAddView = {
-        code,
-        description,
-        brand,
-        vehicle,
-        unit,
-        location: !location ? '' : location,
-        category
+      const user: Customer = await CustomerService.getCustomer(nameValue);
+      setCustomerInstance(user);
+      const { name, contactNumber, address, note } = user;
+      const userValues: Customer = {
+        name,
+        contactNumber,
+        address,
+        note
       };
-      updateFullForm(itemValues);
+      updateFullForm(userValues);
     } else {
       clearForm();
       setEditing(false);
     }
   };
-  const onCategorySelect = (itemCode: string) => {
-    setFormDisabled(false);
-  };
 
+  useEffect(() => {
+    console.log('updating');
+    if (addCustomer.contactNumber !== '' && addCustomer.contactNumber !== '') {
+      setErrorState(false);
+    }
+  }, [addCustomer]);
   return (
     <>
       <div style={{ display: 'flex' }}>
@@ -170,81 +126,74 @@ const CustomerAdd = (props: {
             <Form layout="vertical">
               <Item help={Tips.code} style={styleClasses.formItem}>
                 <AutoComplete
-                  options={codes}
+                  options={names}
                   style={{ width: '40vw' }}
                   onSelect={onCodeSelect}
                   onFocus={() => {
                     clearForm();
                     setEditing(false);
                   }}
-                  onSearch={onItemSearch}
-                  placeholder="Part number"
-                  value={addItem.code}
+                  onSearch={onUserSearch}
+                  placeholder="Customer name"
+                  value={addCustomer.name}
                   onChange={(value: string) => {
-                    updateForm('code', value);
+                    updateForm('name', value);
                   }}
                 />
               </Item>
-              <Item help={Tips.vehicle} style={styleClasses.formItem}>
+              <Item help={Tips.address} style={styleClasses.formItem}>
                 <Input
-                  placeholder="Name"
+                  placeholder="Address"
                   disabled={formDisabled}
-                  value={addItem.vehicle}
+                  value={addCustomer.address}
                   onChange={(event: any) => {
-                    updateForm('vehicle', event.target.value);
-                    generateDescription();
+                    updateForm('address', event.target.value);
                   }}
                 />
               </Item>
               <Item help={Tips.brand} style={styleClasses.formItem}>
                 <Input
-                  placeholder="Address"
+                  placeholder="Contact Numbers"
                   disabled={formDisabled}
-                  value={addItem.brand}
+                  value={addCustomer.contactNumber}
                   onChange={(event: any) => {
-                    updateForm('brand', event.target.value);
-                    generateDescription();
+                    updateForm('contactNumber', event.target.value);
                   }}
                 />
               </Item>
-              <Item help={Tips.location} style={styleClasses.formItem}>
-                <Input
-                  placeholder="Contact Numbers"
+              <Item help={Tips.contact} style={styleClasses.formItem}>
+                <TextArea
+                  rows={4}
+                  placeholder="Additional Note Related to customer"
                   disabled={formDisabled}
-                  value={addItem.location}
+                  value={addCustomer.note}
                   onChange={(event: any) => {
                     console.log('event', event.target.value);
-                    updateForm('location', event.target.value);
+                    updateForm('note', event.target.value);
                   }}
                 />
               </Item>
             </Form>
-            <Box p={2}>
-              <Typography>
-                Please not that by default quantity will be 0, selling price
-                will be 0.00 and cost will be 0.00
-              </Typography>
-            </Box>
           </CardContent>
           <CardActions style={{ float: 'right' }}>
             {editing ? (
               <Button
                 color="primary"
                 variant="contained"
-                disabled={error.category.validateStatus !== 'success'}
+                disabled={error}
                 onClick={() => {
-                  ItemService.editItem(itemInstance, addItem);
+                  CustomerService.editCustomer(customerInstance, addCustomer);
                 }}
               >
-                Edit Item
+                Update Customer
               </Button>
             ) : (
               <Button
                 color="primary"
                 variant="contained"
-                disabled={error.category.validateStatus !== 'success'}
-                onClick={async () => {
-                  ItemService.addItem(addItem);
+                disabled={error}
+                onClick={() => {
+                  CustomerService.addCustomer(addCustomer);
                 }}
               >
                 Add Item
