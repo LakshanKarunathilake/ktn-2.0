@@ -6,7 +6,7 @@ import {
   CardActions,
   Button
 } from '@material-ui/core';
-import { AutoComplete, Input, Form } from 'antd';
+import { AutoComplete, Input, Form, Table } from 'antd';
 import swal from 'sweetalert';
 import CustomerService from '../../services/customer';
 import { Customer } from '../../models/Customer';
@@ -21,6 +21,29 @@ const Tips = {
   brand: 'Make of the item, leave empty if unknown',
   contact: 'Leave empty if unknown'
 };
+
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name'
+  },
+  {
+    title: 'Address',
+    dataIndex: 'address',
+    key: 'address'
+  },
+  {
+    title: 'Contact Number',
+    dataIndex: 'contactNumber',
+    key: 'contactNumber'
+  },
+  {
+    title: 'Note',
+    dataIndex: 'note',
+    key: 'note'
+  }
+];
 
 const styleClasses = {
   formItem: { marginTop: '15px', marginBottom: '15px' }
@@ -55,6 +78,7 @@ const CustomerAdd = (props: {
   const [customerInstance, setCustomerInstance] = useState();
   const [editing, setEditing] = useState(false);
   const [error, setErrorState] = useState(true);
+  const [dataSource, setdataSource] = useState([]);
 
   const onUserSearch = (searchText: string) => {
     if (searchText !== '') {
@@ -108,6 +132,20 @@ const CustomerAdd = (props: {
       setErrorState(false);
     }
   }, [addCustomer]);
+
+  useEffect(() => {
+    CustomerService.getLatestCustomers()
+      .then((values: any) => {
+        setdataSource(
+          values.map((v: Customer) => {
+            return { name: v.name, note: v.note, address: v.address };
+          })
+        );
+      })
+      .catch((e: any) => {
+        console.log('Error', e);
+      });
+  }, []);
   return (
     <>
       <div style={{ display: 'flex' }}>
@@ -211,7 +249,12 @@ const CustomerAdd = (props: {
           />
         </Card>
       </div>
-      <Card variant="outlined" style={{ margin: '15px', height: '30%' }}></Card>
+      <Card
+        variant="outlined"
+        style={{ margin: '15px', height: '30%', overflow: 'scroll' }}
+      >
+        <Table dataSource={dataSource} columns={columns} />;
+      </Card>
     </>
   );
 };
