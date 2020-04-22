@@ -32,11 +32,7 @@ export default class CustomerService {
   static async addCustomer(customer: Customer) {
     sequelize
       .model('Customer')
-      .create({
-        name: customer.name,
-        address: customer.address,
-        contactNumber: customer.contactNumber
-      })
+      .create(customer)
       .then(() => {
         return swal('Customer Add', 'Customer successfully added', 'success');
       })
@@ -47,9 +43,11 @@ export default class CustomerService {
   }
 
   static async editCustomer(customer: any, customerValues: Customer) {
+    const { address, contactNumber, note } = customerValues;
     customer.update({
-      address: customerValues.address,
-      contactNumber: customerValues.contactNumber
+      address,
+      contactNumber,
+      note
     });
     customer
       .save()
