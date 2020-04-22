@@ -18,21 +18,3 @@ export function updateForm(key: string, value: string, form: string) {
     });
   };
 }
-
-export function updateFullForm(values: ItemAddView) {
-  return (dispatch: Dispatch) => {
-    dispatch({
-      type: UPDATE_FULL_FORM,
-      values
-    });
-  };
-}
-
-export function setFormDisabled(value: boolean) {
-  return (dispatch: Dispatch) => {
-    dispatch({
-      type: UPDATE_FROM_STATUS,
-      value
-    });
-  };
-}
