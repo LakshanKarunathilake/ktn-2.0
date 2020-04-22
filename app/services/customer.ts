@@ -18,7 +18,8 @@ export default class CustomerService {
   static async getLatestCustomers() {
     try {
       const customers = await sequelize.model('Customer').findAll({
-        limit: 3
+        limit: 3,
+        order: [['createdAt', 'DESC']]
       });
       return customers;
     } catch (e) {
