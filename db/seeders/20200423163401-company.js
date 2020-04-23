@@ -11,7 +11,6 @@ module.exports = {
         updatedAt: new Date()
       };
     });
-    console.log('new', newRecords);
     return queryInterface.bulkInsert('Companies', newRecords, {});
   },
 
