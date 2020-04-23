@@ -4,10 +4,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       invoice: { type: DataTypes.STRING, allowNull: false, unique: true },
       total: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
-      discount: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+      discount: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+        defaultValue: 0.0
+      },
       grand: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
       credit: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
-      returned: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
       note: { type: DataTypes.STRING }
     },
     {}
