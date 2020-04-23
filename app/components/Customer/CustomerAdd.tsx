@@ -10,6 +10,7 @@ import { AutoComplete, Input, Form, Table } from 'antd';
 import swal from 'sweetalert';
 import CustomerService from '../../services/customer';
 import { Customer } from '../../models/Customer';
+import customer from '../../services/customer';
 
 const { TextArea } = Input;
 const { Item } = Form;
@@ -138,7 +139,12 @@ const CustomerAdd = (props: {
       .then((values: any) => {
         setdataSource(
           values.map((v: Customer) => {
-            return { name: v.name, note: v.note, address: v.address };
+            return {
+              name: v.name,
+              note: v.note,
+              address: v.address,
+              contactNumber: v.contactNumber
+            };
           })
         );
       })
@@ -253,7 +259,7 @@ const CustomerAdd = (props: {
         variant="outlined"
         style={{ margin: '15px', height: '30%', overflow: 'scroll' }}
       >
-        <Table dataSource={dataSource} columns={columns} />;
+        <Table dataSource={dataSource} columns={columns} />
       </Card>
     </>
   );
