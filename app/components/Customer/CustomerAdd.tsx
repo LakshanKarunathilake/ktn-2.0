@@ -128,7 +128,6 @@ const CustomerAdd = (props: {
   };
 
   useEffect(() => {
-    console.log('updating');
     if (addCustomer.contactNumber !== '' && addCustomer.contactNumber !== '') {
       setErrorState(false);
     }
@@ -152,6 +151,7 @@ const CustomerAdd = (props: {
         console.log('Error', e);
       });
   }, []);
+
   return (
     <>
       <div style={{ display: 'flex' }}>
