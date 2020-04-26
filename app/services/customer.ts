@@ -15,6 +15,19 @@ export default class CustomerService {
     );
   }
 
+  static async getLatestCustomers() {
+    try {
+      const customers = await sequelize.model('Customer').findAll({
+        limit: 3,
+        order: [['createdAt', 'DESC']]
+      });
+      return customers;
+    } catch (e) {
+      console.log('Error caught while getting latest customers', e);
+    }
+    return 0;
+  }
+
   static async getCustomer(name: string) {
     try {
       const customer = await sequelize.model('Customer').findOne({

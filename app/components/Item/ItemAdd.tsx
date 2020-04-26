@@ -8,13 +8,38 @@ import {
   CardActions,
   Button
 } from '@material-ui/core';
-import { AutoComplete, Select, Input, Form } from 'antd';
+import { AutoComplete, Select, Input, Form, Table } from 'antd';
 import swal from 'sweetalert';
 import ItemService from '../../services/item';
 import { ItemAddView } from '../../models/User';
+import CustomerService from '../../services/customer';
+import { Customer } from '../../models/Customer';
 
 const { Option } = Select;
 const { Item } = Form;
+
+const columns = [
+  {
+    title: 'Code',
+    dataIndex: 'code',
+    key: 'code'
+  },
+  {
+    title: 'Category',
+    dataIndex: 'category',
+    key: 'category'
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description'
+  },
+  {
+    title: 'Unit',
+    dataIndex: 'unit',
+    key: 'unit'
+  }
+];
 
 const Tips = {
   code:
@@ -62,6 +87,7 @@ const ItemAdd = (props: {
   const [error, setErrorState] = useState({
     category: {} as Record<string, any>
   });
+  const [dataSource, setdataSource] = useState([]);
 
   const generateDescription = () => {
     if (addItem.category !== '') {
@@ -148,9 +174,28 @@ const ItemAdd = (props: {
       setEditing(false);
     }
   };
-  const onCategorySelect = (itemCode: string) => {
+  const onCategorySelect = () => {
     setFormDisabled(false);
   };
+
+  useEffect(() => {
+    ItemService.getLatestItems()
+      .then((values: any) => {
+        setdataSource(
+          values.map((v: ItemAddView) => {
+            return {
+              code: v.code,
+              category: v.category,
+              description: v.description,
+              unit: v.unit
+            };
+          })
+        );
+      })
+      .catch((e: any) => {
+        console.log('Error', e);
+      });
+  }, []);
 
   return (
     <>
@@ -330,7 +375,12 @@ const ItemAdd = (props: {
           />
         </Card>
       </div>
-      <Card variant="outlined" style={{ margin: '15px', height: '30%' }}></Card>
+      <Card
+        variant="outlined"
+        style={{ margin: '15px', height: '30%', overflow: 'scroll' }}
+      >
+        <Table dataSource={dataSource} columns={columns} />
+      </Card>
     </>
   );
 };

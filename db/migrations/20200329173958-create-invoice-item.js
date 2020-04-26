@@ -16,9 +16,9 @@ module.exports = {
         },
         onUpdate: 'CASCADE'
       },
-      qty: { type: Sequelize.DECIMAL(4, 2), allowNull: false },
+      qty: { type: Sequelize.DECIMAL(6, 2), allowNull: false },
       selling: { type: Sequelize.DECIMAL(10, 2), allowNull: false },
-      returned: { type: Sequelize.DECIMAL(4, 2), allowNull: false },
+      returnedQty: { type: Sequelize.DECIMAL(4, 2), allowNull: false },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

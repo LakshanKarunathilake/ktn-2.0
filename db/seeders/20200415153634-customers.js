@@ -32,6 +32,7 @@ module.exports = {
       });
 
       return {
+        id: val.customer_code,
         name: val.name,
         contactNumber: tel,
         address: finalAdress,

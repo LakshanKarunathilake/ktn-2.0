@@ -78,6 +78,20 @@ class ItemService {
         return swal('Item Update', 'Item updating failure', 'error');
       });
   }
+
+  static async getLatestItems() {
+    try {
+      const items = await sequelize.model('Item').findAll({
+        limit: 3,
+        order: [['createdAt', 'DESC']]
+      });
+      return items;
+    } catch (e) {
+      console.log('Error caught while getting latest customers', e);
+    }
+    return 0;
+  }
+
 }
 
 export default ItemService;
