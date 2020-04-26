@@ -41,7 +41,7 @@ export const mainListItems = (props: any) => {
         </ListItemIcon>
         <ListItemText primary="Sales" />
       </ListItem>
-      <ListItem button>
+      <ListItem button onClick={() => channgePage('home/purchasing')}>
         <ListItemIcon>
           <LayersIcon />
         </ListItemIcon>
