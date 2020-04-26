@@ -12,8 +12,8 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: 'CASCADE'
       },
       qty: { type: DataTypes.DECIMAL(4, 2), allowNull: false },
-      selling: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
-      returned: { type: DataTypes.DECIMAL(4, 2), allowNull: false }
+      returnedQty: { type: DataTypes.DECIMAL(4, 2), allowNull: false },
+      selling: { type: DataTypes.DECIMAL(10, 2), allowNull: false }
     },
     {}
   );
