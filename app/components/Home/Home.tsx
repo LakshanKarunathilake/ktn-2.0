@@ -17,6 +17,7 @@ import { Route, Switch } from 'react-router-dom';
 import { mainListItems, secondaryListItems } from './ListComponent';
 import CustomerAdd from '../../containers/CustomerAdd';
 import ItemAdd from '../../containers/ItemAdd';
+import Purchasing from '../../containers/Purchaising';
 
 const drawerWidth = 240;
 
@@ -166,6 +167,7 @@ export default function Home(props: any) {
         <Switch>
           <Route path="/home/item" component={ItemAdd} />
           <Route path="/home/customer" component={CustomerAdd} />
+          <Route path="/home/purchasing" component={Purchasing} />
         </Switch>
       </main>
     </div>
