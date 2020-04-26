@@ -12,7 +12,6 @@ module.exports = {
       } else {
         customerId = 1;
       }
-      console.log('c',customerId);
       return {
         invoice: val.invoice_id,
         total: val.total,
