@@ -3,7 +3,9 @@ let categories = require('./data/Categories');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    categories = categories.map(val => val.name);
+    categories = categories
+      .filter(val => val.Item_code !== '')
+      .map(val => val.name);
     const newRecords = items.map(val => {
       let category = 'UNKNOWN';
       if (categories.includes(val.category)) {
