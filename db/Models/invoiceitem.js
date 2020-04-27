@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       qty: { type: DataTypes.DECIMAL(6, 2), allowNull: false },
       returnedQty: { type: DataTypes.DECIMAL(4, 2), allowNull: false },
       selling: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+      lastUpdated: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'OLD'
+      },
       invoiceId: {
         type: DataTypes.STRING,
         onUpdate: 'CASCADE',

@@ -7,7 +7,12 @@ module.exports = (sequelize, DataTypes) => {
       bank: { type: DataTypes.STRING },
       chequeDate: { type: DataTypes.STRING },
       chequeNumber: { type: DataTypes.STRING },
-      amount: { type: DataTypes.STRING }
+      amount: { type: DataTypes.STRING },
+      lastUpdated: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'OLD'
+      }
     },
     {}
   );

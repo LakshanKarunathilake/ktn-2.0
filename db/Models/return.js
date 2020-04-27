@@ -22,7 +22,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       qty: { type: DataTypes.DECIMAL(4, 2), allowNull: false },
       unit: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
-      reason: { type: DataTypes.STRING, allowNull: false }
+      reason: { type: DataTypes.STRING, allowNull: false },
+      lastUpdated: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'OLD'
+      }
     },
     {}
   );

@@ -19,6 +19,11 @@ module.exports = (sequelize, DataTypes) => {
           key: 'name'
         },
         onUpdate: 'CASCADE'
+      },
+      lastUpdated: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'OLD'
       }
     },
     {}

@@ -4,7 +4,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       number: { type: DataTypes.STRING, allowNull: false, unique: true },
       date: { type: DataTypes.DATEONLY, allowNull: false },
-      total: { type: DataTypes.DECIMAL(10, 2), allowNull: false }
+      total: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
+      lastUpdated: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'OLD'
+      }
     },
     {}
   );

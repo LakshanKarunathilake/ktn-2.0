@@ -4,7 +4,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: { type: DataTypes.STRING, allowNull: false, unique: true },
       address: { type: DataTypes.STRING, allowNull: false },
-      contactNumber: { type: DataTypes.STRING, allowNull: false }
+      contactNumber: { type: DataTypes.STRING, allowNull: false },
+      lastUpdated: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'OLD'
+      }
     },
     {}
   );
