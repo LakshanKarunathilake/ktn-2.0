@@ -2,6 +2,7 @@ import { QueryTypes } from 'sequelize';
 import swal from 'sweetalert';
 import DBService from './db';
 import { ItemAddView } from '../models/User';
+import GeneralCache from '../cache/GeneralCache';
 
 const sequelize = DBService.getSequelize();
 
@@ -39,7 +40,7 @@ class ItemService {
   }
 
   static async addItem(item: ItemAddView) {
-    console.log('i', item);
+    const user = GeneralCache.getValue('user');
     sequelize
       .model('Item')
       .create({
@@ -48,7 +49,8 @@ class ItemService {
         description: item.description,
         unit: item.unit,
         vehicle: item.vehicle,
-        brand: item.brand
+        brand: item.brand,
+        lastUpdated: user['name']
       })
       .then(() => {
         return swal('Item Add', 'Item successfully added', 'success');
@@ -60,13 +62,15 @@ class ItemService {
   }
 
   static async editItem(item: any, itemValues: ItemAddView) {
+    const user = GeneralCache.getValue('user');
     item.update({
       category: itemValues.category,
       vehicle: itemValues.vehicle,
       brand: itemValues.brand,
       description: itemValues.description,
       unit: itemValues.unit,
-      location: itemValues.location
+      location: itemValues.location,
+      lastUpdated: user['name']
     });
     item
       .save()
@@ -83,7 +87,7 @@ class ItemService {
     try {
       const items = await sequelize.model('Item').findAll({
         limit: 3,
-        order: [['createdAt', 'DESC']]
+        order: [['updatedAt', 'DESC']]
       });
       return items;
     } catch (e) {
@@ -91,7 +95,6 @@ class ItemService {
     }
     return 0;
   }
-
 }
 
 export default ItemService;
