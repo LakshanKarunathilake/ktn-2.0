@@ -12,8 +12,6 @@ import { AutoComplete, Select, Input, Form, Table } from 'antd';
 import swal from 'sweetalert';
 import ItemService from '../../services/item';
 import { ItemAddView } from '../../models/User';
-import CustomerService from '../../services/customer';
-import { Customer } from '../../models/Customer';
 
 const { Option } = Select;
 const { Item } = Form;
