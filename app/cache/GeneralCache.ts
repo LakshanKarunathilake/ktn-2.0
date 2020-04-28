@@ -1,14 +1,17 @@
 import NodeCache from 'node-cache';
 
 class GeneralCache {
-  static cache = new NodeCache();
+  static cache: NodeCache;
 
   static addToCache(key: string, value: any) {
+    if (GeneralCache.cache === undefined) {
+      GeneralCache.cache = new NodeCache();
+    }
     GeneralCache.cache.set(key, value);
   }
 
   static getValue(key: string) {
-    GeneralCache.cache.get(key);
+    return GeneralCache.cache.get(key);
   }
 }
 
