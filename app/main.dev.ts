@@ -49,11 +49,12 @@ const installExtensions = async () => {
 };
 
 const createWindow = async () => {
-  // Connecting to Databasee
-
+  // Set global variable to access sequelize
   global.sharedObject = {
     sequelize: models.sequelize
   };
+
+  // Sync queries
   if (database.runQueries) {
     models.sequelize
       .sync({ force: true })
