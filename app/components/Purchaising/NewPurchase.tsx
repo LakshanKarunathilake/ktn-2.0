@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { AutoComplete, Button, Card, Steps, Typography } from 'antd';
+import {
+  AutoComplete,
+  Button,
+  Card,
+  Steps,
+  Form,
+  Input,
+  Typography
+} from 'antd';
 import {
   UserOutlined,
   SolutionOutlined,
@@ -10,6 +18,8 @@ import PurchaseService from '../../services/purchase';
 import Purchase from '../../models/Purchase';
 
 const { Step } = Steps;
+const { Item } = Form;
+const { Title, Text } = Typography;
 
 const NewPurchase = (props: {
   purchase: Purchase;
@@ -27,6 +37,7 @@ const NewPurchase = (props: {
         const updated = val.map((v: any) => {
           return { value: v.name };
         });
+        setNames(updated);
         return setAllNames(updated);
       })
       .catch((e: any) => {
@@ -45,7 +56,11 @@ const NewPurchase = (props: {
 
   const onItemSearch = (searchText: string) => {
     if (searchText !== '') {
-      setNames(allNames.filter(value => value.value === searchText));
+      setNames(
+        allNames.filter(value =>
+          value.value.toUpperCase().includes(searchText.toUpperCase())
+        )
+      );
     }
   };
 
@@ -54,16 +69,64 @@ const NewPurchase = (props: {
       title: 'Purchase overview',
       content: (
         <>
-          <AutoComplete
-            options={names}
-            style={{ width: '40vw' }}
-            onSearch={onItemSearch}
-            placeholder="Part number"
-            value={purchase.invoiceNo}
-            onChange={(value: string) => {
-              updateForm('code', value);
-            }}
-          />
+          <Card style={{ marginBottom: 50 }}>
+            <Title level={4}>New purchase add note</Title>
+            <ul>
+              <li>
+                <Text>Make sure you select the correct Supplier</Text>
+              </li>
+              <li>
+                <Text>
+                  If supplier is not there and new one but you need Super user
+                  password
+                </Text>
+              </li>
+              <li>
+                <Text>
+                  Invoice total - discount should match the total of purchase
+                  item costs
+                </Text>
+              </li>
+            </ul>
+          </Card>
+          <Form>
+            <Item>
+              <AutoComplete
+                options={names}
+                style={{ width: '40vw' }}
+                onSearch={onItemSearch}
+                placeholder="Retailer Name"
+                value={purchase.invoiceNo}
+                onChange={(value: string) => {
+                  updateForm('invoiceNo', value);
+                }}
+              />
+            </Item>
+            <Item>
+              <Input
+                style={{ width: '40vw' }}
+                addonBefore="Rs."
+                placeholder="Invoice Total"
+                value={purchase.total}
+                type="number"
+                onChange={(event: any) => {
+                  updateForm('total', event.target.value);
+                }}
+              />
+            </Item>
+            <Item>
+              <Input
+                style={{ width: '40vw' }}
+                addonAfter="%"
+                placeholder="Discount Percentage"
+                value={purchase.discount}
+                type="number"
+                onChange={(event: any) => {
+                  updateForm('discount', event.target.value);
+                }}
+              />
+            </Item>
+          </Form>
         </>
       ),
       icon: <UserOutlined />
