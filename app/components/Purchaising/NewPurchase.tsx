@@ -1,41 +1,38 @@
-import React, { useState } from 'react';
-import { Button, Card, Steps, Typography } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { AutoComplete, Button, Card, Steps, Typography } from 'antd';
 import {
   UserOutlined,
   SolutionOutlined,
   SmileOutlined
 } from '@ant-design/icons';
 import uid from 'uid';
+import PurchaseService from '../../services/purchase';
+import Purchase from '../../models/Purchase';
 
 const { Step } = Steps;
-const { Text, Title } = Typography;
 
-const steps = [
-  {
-    title: 'Purchase overview',
-    content: (
-      <>
-        <Title level={4}>You are about to add a purchase</Title>
-        <Text>You have to Follow Three Steps, to complete a purchase</Text>
-      </>
-    ),
-    icon: <UserOutlined />
-  },
-  {
-    title: 'Detailed Purchase',
-    content: 'Second-content',
-    icon: <SolutionOutlined />
-  },
-  {
-    title: 'Last',
-    content: 'Last-content',
-    icon: <SmileOutlined />
-  }
-];
-
-const NewPurchase = () => {
+const NewPurchase = (props: {
+  purchase: Purchase;
+  updateForm: (key: string, value: string) => void;
+}) => {
+  console.log('new purch', props);
+  const { purchase, updateForm } = props;
   const [currentStep, setCurrentStep] = useState(0);
+  const [names, setNames] = useState<{ value: string }[]>([]);
+  const [allNames, setAllNames] = useState<{ value: string }[]>([]);
 
+  useEffect(() => {
+    PurchaseService.getSuppliers()
+      .then((val: any) => {
+        const updated = val.map((v: any) => {
+          return { value: v.name };
+        });
+        return setAllNames(updated);
+      })
+      .catch((e: any) => {
+        console.log('error', e);
+      });
+  }, []);
   const next = () => {
     const current = currentStep + 1;
     setCurrentStep(current);
@@ -45,6 +42,43 @@ const NewPurchase = () => {
     const current = currentStep - 1;
     setCurrentStep(current);
   };
+
+  const onItemSearch = (searchText: string) => {
+    if (searchText !== '') {
+      setNames(allNames.filter(value => value.value === searchText));
+    }
+  };
+
+  const steps = [
+    {
+      title: 'Purchase overview',
+      content: (
+        <>
+          <AutoComplete
+            options={names}
+            style={{ width: '40vw' }}
+            onSearch={onItemSearch}
+            placeholder="Part number"
+            value={purchase.invoiceNo}
+            onChange={(value: string) => {
+              updateForm('code', value);
+            }}
+          />
+        </>
+      ),
+      icon: <UserOutlined />
+    },
+    {
+      title: 'Detailed Purchase',
+      content: 'Second-content',
+      icon: <SolutionOutlined />
+    },
+    {
+      title: 'Last',
+      content: 'Last-content',
+      icon: <SmileOutlined />
+    }
+  ];
   return (
     <>
       <Steps current={currentStep}>
