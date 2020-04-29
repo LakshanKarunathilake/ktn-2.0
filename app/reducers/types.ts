@@ -5,6 +5,7 @@ import {
 } from 'redux';
 import { ItemAddView, LoginView, SignupView } from '../models/User';
 import { Customer } from '../models/Customer';
+import Purchase from '../models/Purchase';
 
 export type inventoryStoreType = {
   counter: number;
@@ -12,6 +13,7 @@ export type inventoryStoreType = {
   loginForm: LoginView;
   addItem: ItemAddView;
   addCustomer: Customer;
+  purchase: Purchase;
 };
 
 export type GetState = () => inventoryStoreType;
