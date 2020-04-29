@@ -1,25 +1,20 @@
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { updateForm, updateFullForm, setFormDisabled } from '../actions/item';
 import { inventoryStoreType } from '../reducers/types';
+import { updateForm } from '../actions/purchase';
 import View from '../components/Purchaising/View';
 
 function mapStateToProps(state: inventoryStoreType) {
-  console.log('login state', state);
-  const { addItem } = state;
-  addItem.formDisabled =
-    addItem.formDisabled === undefined ? true : addItem.formDisabled;
+  const { purchase } = state;
   return {
-    addItem
+    purchase
   };
 }
 
 function mapDispatchToProps(dispatch: Dispatch) {
   return bindActionCreators(
     {
-      updateFullForm,
-      updateForm,
-      setFormDisabled
+      updateForm
     },
     dispatch
   );
