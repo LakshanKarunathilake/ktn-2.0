@@ -124,7 +124,12 @@ const PurchaseItems = () => {
           </Button>
         </CardActions>
       </Card>
-      <Table dataSource={dataSource} columns={columns} />
+      <Table
+        size={'small'}
+        dataSource={dataSource}
+        columns={columns}
+        pagination={{ pageSize: 5 }}
+      />
     </>
   );
 };
