@@ -1,22 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import {
-  AutoComplete,
-  Button,
-  Card,
-  Steps,
-  Form,
-  Input,
-  Typography
-} from 'antd';
+import React, { useState } from 'react';
+import { Button, Card, Steps } from 'antd';
 import {
   UserOutlined,
   SolutionOutlined,
   SmileOutlined
 } from '@ant-design/icons';
 import uid from 'uid';
-import PurchaseService from '../../services/purchase';
 import Purchase from '../../models/Purchase';
 import OverallInfo from '../Item/InformationSteps/overallInfo';
+import PurchaseItems from '../Item/InformationSteps/purchaseItems';
 
 const { Step } = Steps;
 
@@ -46,7 +38,7 @@ const NewPurchase = (props: {
     },
     {
       title: 'Detailed Purchase',
-      content: 'Second-content',
+      content: <PurchaseItems />,
       icon: <SolutionOutlined />
     },
     {
