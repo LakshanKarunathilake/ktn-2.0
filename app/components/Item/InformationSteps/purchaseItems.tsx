@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AutoComplete, Button, Card, Form, Input, Table } from 'antd';
 import { CardActions } from '@material-ui/core';
+import ItemService from '../../../services/item';
 
 const { Item } = Form;
 
@@ -23,6 +24,33 @@ const PurchaseItems = () => {
       purchased: number;
     }>
   >([]);
+
+  const [codes, setCodes] = useState<{ value: string }[]>([]);
+
+  const onItemSearch = (searchText: string) => {
+    if (searchText !== '') {
+      ItemService.getPartNumbers(searchText)
+        .then((val: any) => {
+          const updated = val.map((v: any) => {
+            return { value: v.code };
+          });
+          return setCodes(updated);
+        })
+        .catch((e: any) => {
+          console.log('error', e);
+        });
+    } else {
+      setCodes([]);
+    }
+  };
+
+  const onItemSelect = (code: string) => {
+    ItemService.getItem(code)
+      .then((item: any) => {
+        console.log('item', item);
+      })
+      .catch((e: any) => console.log('Error', e));
+  };
 
   const columns = [
     {
@@ -80,9 +108,12 @@ const PurchaseItems = () => {
             <AutoComplete
               style={{ width: '40vw' }}
               placeholder="Part number"
+              options={codes}
+              onSearch={onItemSearch}
               onChange={value => {
                 setPartNumber(value);
               }}
+              onSelect={onItemSelect}
             />
           </Item>
           <Item>
