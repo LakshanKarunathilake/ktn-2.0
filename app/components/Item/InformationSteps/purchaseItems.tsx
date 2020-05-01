@@ -1,9 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { AutoComplete, Button, Card, Form, Input, Table } from 'antd';
+import React, { useState } from 'react';
+import {
+  AutoComplete,
+  Button,
+  Card,
+  Form,
+  Input,
+  Table,
+  Typography
+} from 'antd';
 import { CardActions } from '@material-ui/core';
+import swal from 'sweetalert';
 import ItemService from '../../../services/item';
 
 const { Item } = Form;
+const { Text } = Typography;
 
 const PurchaseItems = () => {
   let tableDataKey = 0;
@@ -26,6 +36,8 @@ const PurchaseItems = () => {
   >([]);
 
   const [codes, setCodes] = useState<{ value: string }[]>([]);
+  const [previousCost, setPreviousCost] = useState();
+  const [previousSelling, setPreviousSelling] = useState();
 
   const onItemSearch = (searchText: string) => {
     if (searchText !== '') {
@@ -47,7 +59,11 @@ const PurchaseItems = () => {
   const onItemSelect = (code: string) => {
     ItemService.getItem(code)
       .then((item: any) => {
-        console.log('item', item);
+        console.log('item', item.description);
+        setDescription(item.description);
+        setQty(item.stock);
+        setPreviousCost(item.cost);
+        setPreviousSelling(item.selling);
       })
       .catch((e: any) => console.log('Error', e));
   };
@@ -86,19 +102,23 @@ const PurchaseItems = () => {
   ];
 
   const addPurchaseItem = () => {
-    setDataSource(prevState => [
-      ...prevState,
-      {
-        key: tableDataKey,
-        partNumber,
-        description,
-        qty: 1,
-        purchased,
-        selling,
-        cost
-      }
-    ]);
-    tableDataKey += 1;
+    if (dataSource.findIndex(record => record.partNumber === partNumber)) {
+      setDataSource(prevState => [
+        ...prevState,
+        {
+          key: tableDataKey,
+          partNumber,
+          description,
+          qty,
+          purchased,
+          selling,
+          cost
+        }
+      ]);
+      tableDataKey += 1;
+    } else {
+      swal('Warning', 'You are trying to add the same item again', 'warning');
+    }
   };
   return (
     <>
@@ -119,6 +139,7 @@ const PurchaseItems = () => {
           <Item>
             <Input
               placeholder="Description"
+              value={description}
               onChange={(event: any) => {
                 setDescription(event.target.value);
               }}
@@ -127,22 +148,29 @@ const PurchaseItems = () => {
           <Item>
             <Input
               placeholder="Cost"
+              style={{ width: '40vw', marginRight: 20 }}
+              value={cost === 0 ? '' : cost}
               onChange={(event: any) => {
                 setCost(event.target.value);
               }}
             />
+            {previousCost && <Text>{previousCost}</Text>}
           </Item>
           <Item>
             <Input
+              style={{ width: '40vw', marginRight: 20 }}
               placeholder="Selling"
+              value={selling === 0 ? '' : selling}
               onChange={(event: any) => {
                 setSelling(event.target.value);
               }}
             />
+            {previousSelling && <Text>{previousSelling}</Text>}
           </Item>
           <Item>
             <Input
               placeholder="Qty"
+              value={purchased === 0 ? '' : purchased}
               onChange={(event: any) => {
                 setPurchased(event.target.value);
               }}
