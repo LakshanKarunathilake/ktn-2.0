@@ -34,7 +34,7 @@ module.exports = {
         description: val.description,
         stock: val.stock,
         selling: val.selling,
-        cost: val.selling,
+        cost: val.cost,
         unit,
         location: val.location,
         createdAt: new Date(),
