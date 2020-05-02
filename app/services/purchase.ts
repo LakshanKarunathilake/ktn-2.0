@@ -1,21 +1,33 @@
 import DBService from './db';
-import Purchase from '../models/Purchase';
+import Purchase, { Supplier } from '../models/Purchase';
 
-const db = DBService.getSequelize();
+const sequelize = DBService.getSequelize();
 
 class PurchaseService {
   static getSuppliers() {
-    return db.model('Company').findAll({ attributes: ['name'] });
+    return sequelize.model('Company').findAll({ attributes: ['name'] });
+  }
+
+  static getSupplier(name: string) {
+    return sequelize.model('Company').findOne({
+      where: {
+        name
+      }
+    });
+  }
+
+  static addSupplier(supplier: Supplier) {
+    return sequelize.model('Company').create({ supplier });
   }
 
   static addPurchase(purchase: Purchase) {
-    return db.model('Purchase').create({
+    return sequelize.model('Purchase').create({
       purchase
     });
   }
 
   static addPurchaseItems(purchase: Purchase) {
-    return db.model('Purchase').bulkCreate([purchase.items]);
+    return sequelize.model('Purchase').bulkCreate([purchase.items]);
   }
 }
 
