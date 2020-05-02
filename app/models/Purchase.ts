@@ -6,3 +6,9 @@ export default interface Purchase {
   items?: Array<{ code: string; cost: number; selling: number; qty: number }>;
   returns?: Array<any>;
 }
+
+export interface Supplier {
+  name: string;
+  address: string;
+  contactNumber: string;
+}
