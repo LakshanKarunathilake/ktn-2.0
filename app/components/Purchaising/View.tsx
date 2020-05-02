@@ -24,7 +24,6 @@ const View = (props: {
           <AddRetailer />
         </TabPane>
       </Tabs>
-      ,
     </Card>
   );
 };
