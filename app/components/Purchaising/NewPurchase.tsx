@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Card, Steps } from 'antd';
-import {
-  UserOutlined,
-  SolutionOutlined,
-  SmileOutlined
-} from '@ant-design/icons';
+import { UserOutlined, SolutionOutlined } from '@ant-design/icons';
 import uid from 'uid';
 import Purchase from '../../models/Purchase';
 import OverallInfo from '../Item/InformationSteps/overallInfo';
@@ -37,14 +33,9 @@ const NewPurchase = (props: {
       icon: <UserOutlined />
     },
     {
-      title: 'Detailed Purchase',
+      title: 'Purchase Items',
       content: <PurchaseItems />,
       icon: <SolutionOutlined />
-    },
-    {
-      title: 'Last',
-      content: 'Last-content',
-      icon: <SmileOutlined />
     }
   ];
   return (
@@ -64,17 +55,17 @@ const NewPurchase = (props: {
       <Card style={{ height: '75vh', marginBottom: 15 }}>
         {steps[currentStep].content}
       </Card>
+      {currentStep > 0 && (
+        <Button style={{ margin: 8 }} onClick={() => prev()}>
+          Previous
+        </Button>
+      )}
       {currentStep < steps.length - 1 && (
         <Button type="primary" onClick={() => next()}>
           Next
         </Button>
       )}
       {currentStep === steps.length - 1 && <Button type="primary">Done</Button>}
-      {currentStep > 0 && (
-        <Button style={{ margin: 8 }} onClick={() => prev()}>
-          Previous
-        </Button>
-      )}
     </>
   );
 };
