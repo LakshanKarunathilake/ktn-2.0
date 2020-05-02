@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs, Card } from 'antd';
 import NewPurchase from './NewPurchase';
 import Purchase from '../../models/Purchase';
+import AddRetailer from './AddRetailer';
 
 const { TabPane } = Tabs;
 
@@ -13,7 +14,6 @@ const View = (props: {
   purchase: Purchase;
   updateForm: (key: string, value: string) => void;
 }) => {
-  console.log('view props', props);
   const { purchase, updateForm } = props;
   return (
     <Card style={{ height: '100%' }}>
@@ -25,7 +25,7 @@ const View = (props: {
           Content of Tab Pane 2
         </TabPane>
         <TabPane tab="Retailers" key="3">
-          Content of Tab Pane 3
+          <AddRetailer />
         </TabPane>
       </Tabs>
       ,
