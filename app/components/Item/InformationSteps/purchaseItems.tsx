@@ -19,7 +19,7 @@ const PurchaseItems = () => {
   let tableDataKey = 0;
   const [partNumber, setPartNumber] = useState('');
   const [description, setDescription] = useState('');
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState();
   const [selling, setSelling] = useState(0.0);
   const [cost, setCost] = useState(0.0);
   const [purchased, setPurchased] = useState(0);
@@ -148,6 +148,7 @@ const PurchaseItems = () => {
           <Item>
             <Input
               placeholder="Cost"
+              addonBefore="Rs."
               style={{ width: '40vw', marginRight: 20 }}
               value={cost === 0 ? '' : cost}
               onChange={(event: any) => {
@@ -159,6 +160,7 @@ const PurchaseItems = () => {
           <Item>
             <Input
               style={{ width: '40vw', marginRight: 20 }}
+              addonBefore="Rs."
               placeholder="Selling"
               value={selling === 0 ? '' : selling}
               onChange={(event: any) => {
@@ -169,12 +171,14 @@ const PurchaseItems = () => {
           </Item>
           <Item>
             <Input
+              style={{ width: '20vw', marginRight: 20 }}
               placeholder="Qty"
               value={purchased === 0 ? '' : purchased}
               onChange={(event: any) => {
                 setPurchased(event.target.value);
               }}
             />
+            {qty && <Text>{qty}</Text>}
           </Item>
         </Form>
         <CardActions style={{ float: 'right' }}>
