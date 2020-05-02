@@ -1,5 +1,6 @@
 import crypto from 'crypto';
 import { LoginView, SignupView } from '../models/User';
+import GeneralCache from '../cache/GeneralCache';
 import DBService from './db';
 
 const sequelize = DBService.getSequelize();
@@ -22,6 +23,7 @@ class UserService {
         .model('User')
         .findOne({ where: { name: username } })
         .then(user => {
+          GeneralCache.addToCache('user', { name: username });
           console.log('user', password, user.get('password'));
           const hash = crypto
             .pbkdf2Sync(password, user.get('salt'), 1000, 64, `sha512`)

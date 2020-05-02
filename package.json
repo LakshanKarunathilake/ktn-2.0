@@ -250,6 +250,7 @@
     "electron-updater": "^4.2.0",
     "history": "^4.10.1",
     "mysql2": "^2.1.0",
+    "node-cache": "^5.1.0",
     "pg-hstore": "^2.3.3",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -261,7 +262,8 @@
     "redux-thunk": "^2.3.0",
     "sequelize": "^5.21.6",
     "source-map-support": "^0.5.16",
-    "sweetalert": "^2.1.2"
+    "sweetalert": "^2.1.2",
+    "uid": "^1.0.0"
   },
   "devEngines": {
     "node": ">=7.x",

@@ -49,11 +49,12 @@ const installExtensions = async () => {
 };
 
 const createWindow = async () => {
-  // Connecting to Databasee
-
+  // Set global variable to access sequelize
   global.sharedObject = {
     sequelize: models.sequelize
   };
+
+  // Sync queries
   if (database.runQueries) {
     models.sequelize
       .sync({ force: true })
@@ -75,8 +76,8 @@ const createWindow = async () => {
 
   mainWindow = new BrowserWindow({
     show: false,
-    width: 1024,
-    height: 728,
+    width: 1980,
+    height: 1024,
     webPreferences:
       process.env.NODE_ENV === 'development' || process.env.E2E_BUILD === 'true'
         ? {

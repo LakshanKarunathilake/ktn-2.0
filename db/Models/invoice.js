@@ -11,7 +11,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       grand: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
       credit: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
-      note: { type: DataTypes.STRING }
+      note: { type: DataTypes.STRING },
+      lastUpdated: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'OLD'
+      }
     },
     {}
   );

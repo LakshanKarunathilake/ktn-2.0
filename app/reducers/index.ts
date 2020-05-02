@@ -4,6 +4,7 @@ import { History } from 'history';
 import { loginForm, signupForm } from './user';
 import addItem from './item';
 import addCustomer from './customer';
+import purchase from './purchase';
 
 export default function createRootReducer(history: History) {
   return combineReducers({
@@ -11,6 +12,7 @@ export default function createRootReducer(history: History) {
     loginForm,
     signupForm,
     addItem,
-    addCustomer
+    addCustomer,
+    purchase
   });
 }
