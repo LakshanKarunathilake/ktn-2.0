@@ -11,4 +11,7 @@ export interface Supplier {
   name: string;
   address: string;
   contactNumber: string;
+  lastUpdatedBy?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
