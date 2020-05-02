@@ -26,6 +26,7 @@ const OverallInfo = (props: {
         console.log('error', e);
       });
   }, []);
+
   const onItemSearch = (searchText: string) => {
     if (searchText !== '') {
       setNames(
@@ -35,6 +36,7 @@ const OverallInfo = (props: {
       );
     }
   };
+
   return (
     <>
       <Card style={{ marginBottom: 50 }}>
