@@ -6,10 +6,6 @@ import AddRetailer from './AddRetailer';
 
 const { TabPane } = Tabs;
 
-function callback(key) {
-  console.log(key);
-}
-
 const View = (props: {
   purchase: Purchase;
   updateForm: (key: string, value: string) => void;
@@ -17,7 +13,7 @@ const View = (props: {
   const { purchase, updateForm } = props;
   return (
     <Card style={{ height: '100%' }}>
-      <Tabs defaultActiveKey="1" onChange={callback}>
+      <Tabs defaultActiveKey="1">
         <TabPane tab="New Purchase" key="1">
           <NewPurchase purchase={purchase} updateForm={updateForm} />
         </TabPane>
