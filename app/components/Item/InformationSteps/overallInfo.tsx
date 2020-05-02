@@ -77,7 +77,7 @@ const OverallInfo = (props: {
             style={{ width: '40vw' }}
             addonBefore="Rs."
             placeholder="Invoice Total"
-            value={purchase.total}
+            value={purchase.total === 0 ? '' : purchase.total}
             type="number"
             onChange={(event: any) => {
               updateForm('total', event.target.value);
@@ -89,7 +89,7 @@ const OverallInfo = (props: {
             style={{ width: '40vw' }}
             addonAfter="%"
             placeholder="Discount Percentage"
-            value={purchase.discount}
+            value={purchase.discount === 0 ? '' : purchase.discount}
             type="number"
             onChange={(event: any) => {
               updateForm('discount', event.target.value);
