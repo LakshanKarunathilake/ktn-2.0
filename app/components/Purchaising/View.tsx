@@ -17,11 +17,11 @@ const View = (props: {
         <TabPane tab="New Purchase" key="1">
           <NewPurchase purchase={purchase} updateForm={updateForm} />
         </TabPane>
-        <TabPane tab="Previous Purchase" key="2">
-          Content of Tab Pane 2
-        </TabPane>
         <TabPane tab="Retailers" key="3">
           <AddRetailer />
+        </TabPane>
+        <TabPane tab="Previous Purchase" key="2">
+          Content of Tab Pane 2
         </TabPane>
       </Tabs>
     </Card>
