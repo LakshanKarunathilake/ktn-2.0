@@ -16,7 +16,7 @@ const AddRetailer = () => {
   const [formaDisable, setFormDisable] = useState(true);
   const [supplierInstance, setSupplierInstance] = useState(true);
 
-  useEffect(() => {
+  const getSuppliers = () => {
     PurchaseService.getSuppliers()
       .then((val: any) => {
         const updated = val.map((v: any) => {
@@ -28,7 +28,8 @@ const AddRetailer = () => {
       .catch((e: any) => {
         console.log('error', e);
       });
-  }, []);
+  };
+  useEffect(() => getSuppliers(), []);
 
   const onItemSearch = (searchText: string) => {
     if (searchText !== '') {
@@ -38,6 +39,7 @@ const AddRetailer = () => {
       if (similarRecords.length > 0) {
         setNames(similarRecords);
       } else {
+        setNames([]);
         setEditing(false);
         setFormDisable(false);
       }
@@ -55,6 +57,7 @@ const AddRetailer = () => {
   };
 
   const clearForm = () => {
+    setName('');
     setAddress('');
     setContactNumber('');
   };
@@ -129,14 +132,59 @@ const AddRetailer = () => {
           <Button
             style={{ margin: 5 }}
             type="primary"
+            disabled={address === '' && contactNumber === ''}
             onClick={() => {
-              PurchaseService.addSupplier({ name, address, contactNumber });
+              console.log('val', name, address, contactNumber);
+              PurchaseService.addSupplier({ name, address, contactNumber })
+                .then(() => {
+                  return swal(
+                    'Successful',
+                    `Supplier ${name} added successfully to database`,
+                    'success'
+                  );
+                })
+                .then(() => {
+                  getSuppliers();
+                  return clearForm();
+                })
+                .catch((e: any) => {
+                  swal('Failure', `Supplier ${name} adding failure`, 'error');
+                });
             }}
           >
             Add
           </Button>
         )}
-        {editing && <Button style={{ margin: 5 }}>Update</Button>}
+        {editing && (
+          <Button
+            style={{ margin: 5 }}
+            disabled={address === '' && contactNumber === ''}
+            onClick={() =>
+              PurchaseService.editSupplier(supplierInstance, {
+                name,
+                address,
+                contactNumber
+              })
+                .then(() => {
+                  return swal(
+                    'Item Update',
+                    'Item successfully changed',
+                    'success'
+                  );
+                })
+                .then(() => {
+                  setEditing(false);
+                  clearForm();
+                })
+                .catch((e: any) => {
+                  console.log('Error in Item update', e);
+                  return swal('Item Update', 'Item updating failure', 'error');
+                })
+            }
+          >
+            Update
+          </Button>
+        )}
         <Button style={{ margin: 5 }} type="danger" onClick={clearForm}>
           Cancel
         </Button>
