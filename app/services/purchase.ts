@@ -1,5 +1,8 @@
 import DBService from './db';
 import Purchase, { Supplier } from '../models/Purchase';
+import { ItemAddView } from '../models/User';
+import GeneralCache from '../cache/GeneralCache';
+import swal from 'sweetalert';
 
 const sequelize = DBService.getSequelize();
 
@@ -17,7 +20,19 @@ class PurchaseService {
   }
 
   static addSupplier(supplier: Supplier) {
-    return sequelize.model('Company').create({ supplier });
+    return sequelize.model('Company').create({ ...supplier });
+  }
+
+  static async editSupplier(supplier: any, supplierValues: Supplier) {
+    const user = GeneralCache.getValue('user');
+    supplier.update({
+      address: supplierValues.address,
+      contactNumber: supplierValues.contactNumber,
+      lastUpdated: user.name
+    });
+    return supplier
+      .save()
+
   }
 
   static addPurchase(purchase: Purchase) {
