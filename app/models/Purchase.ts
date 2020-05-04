@@ -1,7 +1,7 @@
 export default interface Purchase {
   invoiceNo: string;
   date: Date;
-  total: number;
+  total: string;
   items?: Array<{ code: string; cost: number; selling: number; qty: number }>;
   returns?: Array<any>;
 }
