@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { AutoComplete, Card, Form, Input, Typography } from 'antd';
+import { AutoComplete, Card, Form, Input, Typography, DatePicker } from 'antd';
 import Purchase from '../../../models/Purchase';
 import PurchaseService from '../../../services/purchase';
 
 const { Item } = Form;
 const { Title, Text } = Typography;
+
+const hints = {
+  company: 'Select company from the list',
+  billPrice: 'Enter bill price after reducing the discount(Final Cheque Value)',
+  date: 'Select date as the invoice state'
+};
+
 const OverallInfo = (props: {
   purchase: Purchase;
   updateForm: (key: string, value: string) => void;
@@ -60,7 +67,7 @@ const OverallInfo = (props: {
         </ul>
       </Card>
       <Form>
-        <Item>
+        <Item help={hints.company} style={{ marginBottom: 20 }}>
           <AutoComplete
             options={names}
             style={{ width: '40vw' }}
@@ -72,27 +79,23 @@ const OverallInfo = (props: {
             }}
           />
         </Item>
-        <Item>
+        <Item help={hints.billPrice} style={{ marginBottom: 20 }}>
           <Input
             style={{ width: '40vw' }}
             addonBefore="Rs."
             placeholder="Invoice Total"
-            value={purchase.total === 0 ? '' : purchase.total}
+            value={purchase.total === '0' ? '' : purchase.total}
             type="number"
             onChange={(event: any) => {
               updateForm('total', event.target.value);
             }}
           />
         </Item>
-        <Item>
-          <Input
-            style={{ width: '40vw' }}
-            addonAfter="%"
-            placeholder="Discount Percentage"
-            value={purchase.discount === 0 ? '' : purchase.discount}
-            type="number"
-            onChange={(event: any) => {
-              updateForm('discount', event.target.value);
+        <Item help={hints.date} style={{ marginBottom: 20 }}>
+          <DatePicker
+            value={purchase.date}
+            onChange={(value: any) => {
+              updateForm('date', value);
             }}
           />
         </Item>
