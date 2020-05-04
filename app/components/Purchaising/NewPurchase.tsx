@@ -35,7 +35,7 @@ const NewPurchase = (props: {
     },
     {
       title: 'Purchase Items',
-      content: <PurchaseItems purchase={purchase} updateForm={updateForm}/>,
+      content: <PurchaseItems purchase={purchase} updateForm={updateForm} />,
       icon: <SolutionOutlined />
     }
   ];
