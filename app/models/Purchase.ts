@@ -2,8 +2,18 @@ export default interface Purchase {
   invoiceNo: string;
   date: Date;
   total: string;
-  items?: Array<{ code: string; cost: number; selling: number; qty: number }>;
+  items: Array<PurchaseItem>;
   returns?: Array<any>;
+}
+
+export interface PurchaseItem {
+  key: number;
+  partNumber: string;
+  description: string;
+  cost: number;
+  selling: number;
+  qty: number;
+  purchased: number;
 }
 
 export interface Supplier {
