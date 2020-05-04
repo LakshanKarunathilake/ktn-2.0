@@ -10,32 +10,24 @@ import {
 } from 'antd';
 import { CardActions } from '@material-ui/core';
 import swal from 'sweetalert';
+import { DeleteOutlined } from '@ant-design/icons';
 import ItemService from '../../../services/item';
-import Purchase from '../../../models/Purchase';
+import Purchase, { PurchaseItem } from '../../../models/Purchase';
 
 const { Item } = Form;
 const { Text } = Typography;
 
-const PurchaseItems = () => {
-  let tableDataKey = 0;
+const PurchaseItems = (props: {
+  purchase: Purchase;
+  updateForm: (key: string, value: any) => void;
+}) => {
+  const { updateForm, purchase } = props;
   const [partNumber, setPartNumber] = useState('');
   const [description, setDescription] = useState('');
   const [qty, setQty] = useState();
   const [selling, setSelling] = useState(0.0);
   const [cost, setCost] = useState(0.0);
   const [purchased, setPurchased] = useState(0);
-  const [dataSource, setDataSource] = useState<
-    Array<{
-      key: number;
-      partNumber: string;
-      description: string;
-      cost: number;
-      selling: number;
-      qty: number;
-      purchased: number;
-    }>
-  >([]);
-
   const [codes, setCodes] = useState<{ value: string }[]>([]);
   const [previousCost, setPreviousCost] = useState();
   const [previousSelling, setPreviousSelling] = useState();
@@ -99,19 +91,47 @@ const PurchaseItems = () => {
       title: 'Purchased Qty',
       dataIndex: 'purchased',
       key: 'purchased'
+    },
+    {
+      title: 'Action',
+      dataIndex: '',
+      key: 'x',
+      render: (row: PurchaseItem) => (
+        <Button
+          onClick={() => {
+            console.log('props', row);
+            updateForm(
+              'items',
+              purchase.items.filter(val => val.key === row.key)
+            );
+          }}
+          icon={<DeleteOutlined />}
+        />
+      )
     }
   ];
 
-  const addPurchaseItem = (props: {
-    purchase: Purchase;
-    updateForm: (key: string, value: string) => void;
-  }) => {
-    const { updateForm, purchase } = props;
-    if (dataSource.findIndex(record => record.partNumber === partNumber)) {
-      setDataSource(prevState => [
-        ...prevState,
+  const addPurchaseItem = () => {
+    if (
+      purchase.items &&
+      purchase.items.findIndex(record => record.partNumber === partNumber)
+    ) {
+      // setDataSource(prevState => [
+      //   ...prevState,
+      //   {
+      //     key: tableDataKey,
+      //     partNumber,
+      //     description,
+      //     qty,
+      //     purchased,
+      //     selling,
+      //     cost
+      //   }
+      // ]);
+      updateForm('items', [
+        ...purchase.items,
         {
-          key: tableDataKey,
+          key: purchase.items.length > 0 ? purchase.items[0].key + 1 : 0,
           partNumber,
           description,
           qty,
@@ -120,11 +140,11 @@ const PurchaseItems = () => {
           cost
         }
       ]);
-      tableDataKey += 1;
     } else {
       swal('Warning', 'You are trying to add the same item again', 'warning');
     }
   };
+
   return (
     <>
       <Card style={{ marginBottom: 15 }}>
@@ -199,14 +219,14 @@ const PurchaseItems = () => {
           </Item>
         </Form>
         <CardActions style={{ float: 'right' }}>
-          <Button type={'primary'} onClick={addPurchaseItem}>
+          <Button type="primary" onClick={addPurchaseItem}>
             Add
           </Button>
         </CardActions>
       </Card>
       <Table
-        size={'small'}
-        dataSource={dataSource}
+        size="small"
+        dataSource={purchase.items}
         columns={columns}
         pagination={{ pageSize: 5 }}
       />
