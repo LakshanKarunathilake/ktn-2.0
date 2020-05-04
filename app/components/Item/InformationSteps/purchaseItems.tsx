@@ -160,7 +160,11 @@ const PurchaseItems = () => {
                 setCost(event.target.value);
               }}
             />
-            {previousCost && <Text>{previousCost}</Text>}
+            {previousCost && (
+              <Text type="warning" strong>
+                {previousCost}
+              </Text>
+            )}
           </Item>
           <Item>
             <Input
@@ -172,7 +176,11 @@ const PurchaseItems = () => {
                 setSelling(event.target.value);
               }}
             />
-            {previousSelling && <Text>{previousSelling}</Text>}
+            {previousSelling && (
+              <Text type="warning" strong>
+                {previousSelling}
+              </Text>
+            )}
           </Item>
           <Item>
             <Input
@@ -183,7 +191,11 @@ const PurchaseItems = () => {
                 setPurchased(event.target.value);
               }}
             />
-            {qty && <Text>{qty}</Text>}
+            {qty && (
+              <Text type="warning" strong>
+                {qty}
+              </Text>
+            )}
           </Item>
         </Form>
         <CardActions style={{ float: 'right' }}>
