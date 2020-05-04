@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Card, Steps } from 'antd';
 import { UserOutlined, SolutionOutlined } from '@ant-design/icons';
 import uid from 'uid';
+import swal from 'sweetalert';
 import Purchase from '../../models/Purchase';
 import OverallInfo from '../Item/InformationSteps/overallInfo';
 import PurchaseItems from '../Item/InformationSteps/purchaseItems';
@@ -61,7 +62,24 @@ const NewPurchase = (props: {
         </Button>
       )}
       {currentStep < steps.length - 1 && (
-        <Button type="primary" onClick={() => next()}>
+        <Button
+          type="primary"
+          onClick={() => {
+            if (
+              purchase.total !== '' &&
+              purchase.invoiceNo !== '' &&
+              purchase.date !== undefined
+            ) {
+              next();
+            } else {
+              swal(
+                'Warning',
+                'You can not proceed without filling the above details',
+                'warning'
+              );
+            }
+          }}
+        >
           Next
         </Button>
       )}
