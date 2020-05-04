@@ -11,6 +11,7 @@ import {
 import { CardActions } from '@material-ui/core';
 import swal from 'sweetalert';
 import ItemService from '../../../services/item';
+import Purchase from '../../../models/Purchase';
 
 const { Item } = Form;
 const { Text } = Typography;
@@ -101,7 +102,11 @@ const PurchaseItems = () => {
     }
   ];
 
-  const addPurchaseItem = () => {
+  const addPurchaseItem = (props: {
+    purchase: Purchase;
+    updateForm: (key: string, value: string) => void;
+  }) => {
+    const { updateForm, purchase } = props;
     if (dataSource.findIndex(record => record.partNumber === partNumber)) {
       setDataSource(prevState => [
         ...prevState,
