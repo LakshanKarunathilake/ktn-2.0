@@ -52,13 +52,19 @@ const PurchaseItems = (props: {
   const onItemSelect = (code: string) => {
     ItemService.getItem(code)
       .then((item: any) => {
-        console.log('item', item.description);
         setDescription(item.description);
         setQty(item.stock);
         setPreviousCost(item.cost);
         setPreviousSelling(item.selling);
       })
       .catch((e: any) => console.log('Error', e));
+  };
+
+  const deletePurchaseItem = (row: PurchaseItem) => {
+    updateForm(
+      'items',
+      purchase.items.filter(val => val.key !== row.key)
+    );
   };
 
   const columns = [
@@ -99,11 +105,7 @@ const PurchaseItems = (props: {
       render: (row: PurchaseItem) => (
         <Button
           onClick={() => {
-            console.log('props', row);
-            updateForm(
-              'items',
-              purchase.items.filter(val => val.key === row.key)
-            );
+            deletePurchaseItem(row);
           }}
           icon={<DeleteOutlined />}
         />
