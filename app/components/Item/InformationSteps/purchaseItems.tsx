@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AutoComplete,
   Button,
@@ -15,7 +15,7 @@ import ItemService from '../../../services/item';
 import Purchase, { PurchaseItem } from '../../../models/Purchase';
 
 const { Item } = Form;
-const { Text } = Typography;
+const { Text, Title } = Typography;
 
 const PurchaseItems = (props: {
   purchase: Purchase;
@@ -31,6 +31,7 @@ const PurchaseItems = (props: {
   const [codes, setCodes] = useState<{ value: string }[]>([]);
   const [previousCost, setPreviousCost] = useState();
   const [previousSelling, setPreviousSelling] = useState();
+  const [invoiceBalance, setInvoiceBalance] = useState();
 
   const onItemSearch = (searchText: string) => {
     if (searchText !== '') {
@@ -118,18 +119,6 @@ const PurchaseItems = (props: {
       purchase.items &&
       purchase.items.findIndex(record => record.partNumber === partNumber)
     ) {
-      // setDataSource(prevState => [
-      //   ...prevState,
-      //   {
-      //     key: tableDataKey,
-      //     partNumber,
-      //     description,
-      //     qty,
-      //     purchased,
-      //     selling,
-      //     cost
-      //   }
-      // ]);
       updateForm('items', [
         ...purchase.items,
         {
@@ -146,86 +135,120 @@ const PurchaseItems = (props: {
       swal('Warning', 'You are trying to add the same item again', 'warning');
     }
   };
-
+  
   return (
     <>
-      <Card style={{ marginBottom: 15 }}>
-        <Form>
-          <Item>
-            <AutoComplete
-              style={{ width: '40vw' }}
-              placeholder="Part number"
-              options={codes}
-              onSearch={onItemSearch}
-              onChange={value => {
-                setPartNumber(value);
+      <div style={{ display: 'flex' }}>
+        <Card style={{ marginBottom: 15, width: '70%' }}>
+          <Form>
+            <Item>
+              <AutoComplete
+                style={{ width: '40vw' }}
+                placeholder="Part number"
+                options={codes}
+                onSearch={onItemSearch}
+                onChange={value => {
+                  setPartNumber(value);
+                }}
+                onSelect={onItemSelect}
+              />
+            </Item>
+            <Item>
+              <Input
+                placeholder="Description"
+                value={description}
+                onChange={(event: any) => {
+                  setDescription(event.target.value);
+                }}
+              />
+            </Item>
+            <Item>
+              <Input
+                placeholder="Cost"
+                addonBefore="Rs."
+                style={{ width: '40vw', marginRight: 20 }}
+                value={cost === 0 ? '' : cost}
+                onChange={(event: any) => {
+                  setCost(event.target.value);
+                }}
+              />
+              {previousCost && (
+                <Text type="warning" strong>
+                  {previousCost}
+                </Text>
+              )}
+            </Item>
+            <Item>
+              <Input
+                style={{ width: '40vw', marginRight: 20 }}
+                addonBefore="Rs."
+                placeholder="Selling"
+                value={selling === 0 ? '' : selling}
+                onChange={(event: any) => {
+                  setSelling(event.target.value);
+                }}
+              />
+              {previousSelling && (
+                <Text type="warning" strong>
+                  {previousSelling}
+                </Text>
+              )}
+            </Item>
+            <Item>
+              <Input
+                style={{ width: '20vw', marginRight: 20 }}
+                placeholder="Qty"
+                value={purchased === 0 ? '' : purchased}
+                onChange={(event: any) => {
+                  setPurchased(event.target.value);
+                }}
+              />
+              {qty && (
+                <Text type="warning" strong>
+                  {qty}
+                </Text>
+              )}
+            </Item>
+          </Form>
+          <CardActions style={{ float: 'right' }}>
+            <Button type="primary" onClick={addPurchaseItem}>
+              Add
+            </Button>
+          </CardActions>
+        </Card>
+        <Card
+          style={{
+            width: '30%',
+            height: '100%',
+            marginLeft: 15
+          }}
+        >
+          <>
+            <Title level={4} type="secondary">
+              Invoice balance
+            </Title>
+            <Text
+              style={{
+                color: '#1890ff',
+                fontSize: 24,
+                display: 'flex',
+                justifyContent: 'flex-end'
               }}
-              onSelect={onItemSelect}
-            />
-          </Item>
-          <Item>
-            <Input
-              placeholder="Description"
-              value={description}
-              onChange={(event: any) => {
-                setDescription(event.target.value);
-              }}
-            />
-          </Item>
-          <Item>
-            <Input
-              placeholder="Cost"
-              addonBefore="Rs."
-              style={{ width: '40vw', marginRight: 20 }}
-              value={cost === 0 ? '' : cost}
-              onChange={(event: any) => {
-                setCost(event.target.value);
-              }}
-            />
-            {previousCost && (
-              <Text type="warning" strong>
-                {previousCost}
-              </Text>
-            )}
-          </Item>
-          <Item>
-            <Input
-              style={{ width: '40vw', marginRight: 20 }}
-              addonBefore="Rs."
-              placeholder="Selling"
-              value={selling === 0 ? '' : selling}
-              onChange={(event: any) => {
-                setSelling(event.target.value);
-              }}
-            />
-            {previousSelling && (
-              <Text type="warning" strong>
-                {previousSelling}
-              </Text>
-            )}
-          </Item>
-          <Item>
-            <Input
-              style={{ width: '20vw', marginRight: 20 }}
-              placeholder="Qty"
-              value={purchased === 0 ? '' : purchased}
-              onChange={(event: any) => {
-                setPurchased(event.target.value);
-              }}
-            />
-            {qty && (
-              <Text type="warning" strong>
-                {qty}
-              </Text>
-            )}
-          </Item>
-        </Form>
-        <CardActions style={{ float: 'right' }}>
-          <Button type="primary" onClick={addPurchaseItem}>
-            Add
-          </Button>
-        </CardActions>
-      </Card>
+            >
+              Rs.100,000
+            </Text>
+          </>
+          <>
+            <Title level={4} type="secondary">
+              Pending balance
+            </Title>
+            <Text style={{ color: '#faad14', fontSize: 24, float: 'right' }}>
+              Rs.100,000
+            </Text>
+          </>
+        </Card>
+      </div>
+
       <Table
         size="small"
         dataSource={purchase.items}
