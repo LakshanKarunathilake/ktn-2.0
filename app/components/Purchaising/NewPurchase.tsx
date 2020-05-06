@@ -83,7 +83,11 @@ const NewPurchase = (props: {
           Next
         </Button>
       )}
-      {currentStep === steps.length - 1 && <Button type="primary">Done</Button>}
+      {currentStep === steps.length - 1 && (
+        <Button type="primary" disabled={purchase.items.length < 1}>
+          Done
+        </Button>
+      )}
     </>
   );
 };
