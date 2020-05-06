@@ -11,6 +11,7 @@ import {
 import { CardActions } from '@material-ui/core';
 import swal from 'sweetalert';
 import { DeleteOutlined } from '@ant-design/icons';
+import _ from 'lodash';
 import ItemService from '../../../services/item';
 import Purchase, { PurchaseItem } from '../../../models/Purchase';
 
@@ -31,7 +32,7 @@ const PurchaseItems = (props: {
   const [codes, setCodes] = useState<{ value: string }[]>([]);
   const [previousCost, setPreviousCost] = useState();
   const [previousSelling, setPreviousSelling] = useState();
-  const [invoiceBalance, setInvoiceBalance] = useState();
+  const [invoiceBalance, setInvoiceBalance] = useState('0.00');
 
   const onItemSearch = (searchText: string) => {
     if (searchText !== '') {
@@ -135,7 +136,17 @@ const PurchaseItems = (props: {
       swal('Warning', 'You are trying to add the same item again', 'warning');
     }
   };
-  
+
+  useEffect(() => {
+    setInvoiceBalance(
+      _.sum(
+        purchase.items.map((record: PurchaseItem) => {
+          return record.cost * record.purchased;
+        })
+      ).toFixed(2)
+    );
+  });
+
   return (
     <>
       <div style={{ display: 'flex' }}>
@@ -235,7 +246,7 @@ const PurchaseItems = (props: {
                 justifyContent: 'flex-end'
               }}
             >
-              Rs.100,000
+              Rs. {parseFloat(purchase.total).toFixed(2)}
             </Text>
           </>
           <>
@@ -243,7 +254,7 @@ const PurchaseItems = (props: {
               Pending balance
             </Title>
             <Text style={{ color: '#faad14', fontSize: 24, float: 'right' }}>
-              Rs.100,000
+              Rs. {invoiceBalance}
             </Text>
           </>
         </Card>
