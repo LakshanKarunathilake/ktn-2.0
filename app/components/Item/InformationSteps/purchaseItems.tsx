@@ -6,7 +6,8 @@ import {
   Form,
   Input,
   Table,
-  Typography
+  Typography,
+  notification
 } from 'antd';
 import { CardActions } from '@material-ui/core';
 import swal from 'sweetalert';
@@ -14,6 +15,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 import _ from 'lodash';
 import ItemService from '../../../services/item';
 import Purchase, { PurchaseItem } from '../../../models/Purchase';
+import { RiseOutlined, FallOutlined } from '@ant-design/icons';
 
 const { Item } = Form;
 const { Text, Title } = Typography;
@@ -179,6 +181,23 @@ const PurchaseItems = (props: {
                 addonBefore="Rs."
                 style={{ width: '40vw', marginRight: 20 }}
                 value={cost === 0 ? '' : cost}
+                onBlur={() => {
+                  if (cost > previousCost) {
+                    notification.warning({
+                      message: 'Cost Price',
+                      description: 'New cost price is INCREASED',
+                      placement: 'bottomRight',
+                      icon: <RiseOutlined />
+                    });
+                  } else {
+                    notification.warning({
+                      message: 'Cost Price',
+                      description: 'New cost price is DECREASED',
+                      placement: 'bottomRight',
+                      icon: <FallOutlined />
+                    });
+                  }
+                }}
                 onChange={(event: any) => {
                   setCost(event.target.value);
                 }}
