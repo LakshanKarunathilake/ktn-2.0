@@ -217,6 +217,23 @@ const PurchaseItems = (props: {
                 onChange={(event: any) => {
                   setSelling(event.target.value);
                 }}
+                onBlur={() => {
+                  if (selling > previousSelling) {
+                    notification.warning({
+                      message: 'Selling Price',
+                      description: 'New selling price is INCREASED',
+                      placement: 'bottomRight',
+                      icon: <RiseOutlined />
+                    });
+                  } else {
+                    notification.warning({
+                      message: 'Selling Price',
+                      description: 'New selling price is DECREASED',
+                      placement: 'bottomRight',
+                      icon: <FallOutlined />
+                    });
+                  }
+                }}
               />
               {previousSelling && (
                 <Text type="warning" strong>
