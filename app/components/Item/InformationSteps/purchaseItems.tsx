@@ -11,11 +11,10 @@ import {
 } from 'antd';
 import { CardActions } from '@material-ui/core';
 import swal from 'sweetalert';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, RiseOutlined, FallOutlined } from '@ant-design/icons';
 import _ from 'lodash';
 import ItemService from '../../../services/item';
 import Purchase, { PurchaseItem } from '../../../models/Purchase';
-import { RiseOutlined, FallOutlined } from '@ant-design/icons';
 
 const { Item } = Form;
 const { Text, Title } = Typography;
