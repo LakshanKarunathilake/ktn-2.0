@@ -18,6 +18,7 @@ import { mainListItems, secondaryListItems } from './ListComponent';
 import CustomerAdd from '../../containers/CustomerAdd';
 import ItemAdd from '../../containers/ItemAdd';
 import Purchasing from '../../containers/Purchaising';
+import Sales from '../../containers/Sales';
 
 const drawerWidth = 240;
 
@@ -168,6 +169,7 @@ export default function Home(props: any) {
           <Route path="/home/item" component={ItemAdd} />
           <Route path="/home/customer" component={CustomerAdd} />
           <Route path="/home/purchasing" component={Purchasing} />
+          <Route path="/home/" component={Sales} />
         </Switch>
       </main>
     </div>
