@@ -1,5 +1,6 @@
-import { Tabs, Button } from 'antd';
+import { Tabs, Button, Card } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { PlusOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 
@@ -12,17 +13,21 @@ const View = () => {
 
   useEffect(() => {
     setPanes([
-      { title: 'Tab 1', content: 'Content of Tab Pane 1', key: '1' },
+      { title: 'Invoice 1', content: 'Content of Tab Pane 1', key: '1' }
     ]);
     setActiveKey(panes[0]);
   }, []);
 
   const add = () => {
-    const newActiveKey = `newTab${newTabIndex}`;
+    const newActiveKey = `Invoice ${newTabIndex}`;
     setPanes(prevState => {
       return [
         ...prevState,
-        { title: 'New Tab', content: 'New Tab Pane', key: newActiveKey }
+        {
+          title: newActiveKey,
+          content: 'New Tab Pane',
+          key: newActiveKey
+        }
       ];
     });
     setNewTabIndex(newTabIndex + 1);
@@ -56,9 +61,9 @@ const View = () => {
   };
 
   return (
-    <div>
-      <div style={{ marginBottom: 16 }}>
-        <Button onClick={add}>ADD</Button>
+    <Card style={{ margin: 10, height: '92%' }}>
+      <div style={{ position: 'absolute', top: 70, right: 10, zIndex: 5 }}>
+        <Button type="primary" onClick={add} icon={<PlusOutlined />} />
       </div>
       <Tabs
         hideAdd
@@ -73,7 +78,7 @@ const View = () => {
           </TabPane>
         ))}
       </Tabs>
-    </div>
+    </Card>
   );
 };
 
