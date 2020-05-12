@@ -4,45 +4,47 @@ import React, { useEffect, useState } from 'react';
 const { TabPane } = Tabs;
 
 const View = () => {
-  const [panes, setPanes] = useState([]);
-  const [newTabIndex, setNewTabIndex] = useState(0);
+  const [panes, setPanes] = useState<
+    Array<{ title?: string; content?: ''; key?: '' }>
+  >([]);
+  const [newTabIndex, setNewTabIndex] = useState(2);
   const [activeKey, setActiveKey] = useState();
 
   useEffect(() => {
     setPanes([
       { title: 'Tab 1', content: 'Content of Tab Pane 1', key: '1' },
-      { title: 'Tab 2', content: 'Content of Tab Pane 2', key: '2' }
     ]);
     setActiveKey(panes[0]);
   }, []);
 
   const add = () => {
-    const newActiveKey = `newTab${setNewTabIndex(newTabIndex + 1)}`;
+    const newActiveKey = `newTab${newTabIndex}`;
     setPanes(prevState => {
       return [
         ...prevState,
-        { title: 'New Tab', content: 'New Tab Pane', key: activeKey }
+        { title: 'New Tab', content: 'New Tab Pane', key: newActiveKey }
       ];
     });
+    setNewTabIndex(newTabIndex + 1);
     setActiveKey(newActiveKey);
   };
 
   const remove = targetKey => {
-    let lastIndex;
+    let lastIndex = 0;
     panes.forEach((pane, i) => {
       if (pane.key === targetKey) {
         lastIndex = i - 1;
       }
     });
-    const panes = panes.filter(pane => pane.key !== targetKey);
+    const newPanes = panes.filter(pane => pane.key !== targetKey);
     if (panes.length && activeKey === targetKey) {
       if (lastIndex >= 0) {
-        activeKey = panes[lastIndex].key;
+        setActiveKey(newPanes[lastIndex].key);
       } else {
-        activeKey = panes[0].key;
+        setActiveKey(panes[0].key);
       }
     }
-    this.setState({ panes, activeKey });
+    setPanes(newPanes);
   };
 
   const onEdit = (targetKey, action) => {
