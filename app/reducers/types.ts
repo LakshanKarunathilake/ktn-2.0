@@ -6,6 +6,7 @@ import {
 import { ItemAddView, LoginView, SignupView } from '../models/User';
 import { Customer } from '../models/Customer';
 import Purchase from '../models/Purchase';
+import { SalesView } from '../models/Sales';
 
 export type inventoryStoreType = {
   counter: number;
@@ -14,6 +15,7 @@ export type inventoryStoreType = {
   addItem: ItemAddView;
   addCustomer: Customer;
   purchase: Purchase;
+  salesView: SalesView;
 };
 
 export type GetState = () => inventoryStoreType;
