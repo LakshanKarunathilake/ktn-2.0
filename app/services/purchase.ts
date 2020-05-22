@@ -1,8 +1,6 @@
 import DBService from './db';
 import Purchase, { Supplier } from '../models/Purchase';
-import { ItemAddView } from '../models/User';
 import GeneralCache from '../cache/GeneralCache';
-import swal from 'sweetalert';
 
 const sequelize = DBService.getSequelize();
 
@@ -30,9 +28,7 @@ class PurchaseService {
       contactNumber: supplierValues.contactNumber,
       lastUpdated: user.name
     });
-    return supplier
-      .save()
-
+    return supplier.save();
   }
 
   static addPurchase(purchase: Purchase) {
