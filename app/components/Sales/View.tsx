@@ -62,7 +62,7 @@ const View = () => {
 
   return (
     <Card style={{ margin: 10, height: '92%' }}>
-      <div style={{ position: 'absolute', top: 70, right: 10, zIndex: 5 }}>
+      <div style={{ position: 'absolute', top: 20, right: 10, zIndex: 5 }}>
         <Button type="primary" onClick={add} icon={<PlusOutlined />} />
       </div>
       <Tabs
