@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Card, Steps } from 'antd';
 import { UserOutlined, SolutionOutlined } from '@ant-design/icons';
 import uid from 'uid';
 import swal from 'sweetalert';
-import Purchase from '../../models/Purchase';
+import Purchase, { PurchaseItem } from '../../models/Purchase';
 import OverallInfo from '../Item/InformationSteps/overallInfo';
 import PurchaseItems from '../Item/InformationSteps/purchaseItems';
+import _ from 'lodash';
 
 const { Step } = Steps;
 
@@ -13,9 +14,34 @@ const NewPurchase = (props: {
   purchase: Purchase;
   updateForm: (key: string, value: string) => void;
 }) => {
+  const [invoiceItemTotal, setInvoiceItemTotal] = useState();
+
   console.log('new purch', props);
   const { purchase, updateForm } = props;
   const [currentStep, setCurrentStep] = useState(0);
+
+  useEffect(() => {
+    setInvoiceItemTotal(
+      _.sum(
+        purchase.items.map((record: PurchaseItem) => {
+          return record.cost * record.purchased;
+        })
+      ).toFixed(2)
+    );
+    console.log(
+      'button',
+      _.inRange(
+        Math.abs(
+          _.round(invoiceItemTotal) - _.round(parseFloat(purchase.total))
+        ),
+        100
+      )
+    );
+  });
+
+  const purchaseAction = () => {
+    console.log('purchase', purchase);
+  };
 
   const next = () => {
     const current = currentStep + 1;
@@ -83,11 +109,22 @@ const NewPurchase = (props: {
           Next
         </Button>
       )}
-      {currentStep === steps.length - 1 && (
-        <Button type="primary" disabled={purchase.items.length < 1}>
-          Done
-        </Button>
-      )}
+      {/* Deactivate button if the difference between invoice original total and  invoice items total are in range of 0 t0 100 */}
+      {currentStep === steps.length - 1 &&
+        _.inRange(
+          Math.abs(
+            _.round(invoiceItemTotal) - _.round(parseFloat(purchase.total))
+          ),
+          100
+        ) && (
+          <Button
+            type="primary"
+            disabled={purchase.items.length < 1}
+            onClick={purchaseAction}
+          >
+            Done
+          </Button>
+        )}
     </>
   );
 };
