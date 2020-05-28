@@ -3,10 +3,10 @@ import { Button, Card, Steps } from 'antd';
 import { UserOutlined, SolutionOutlined } from '@ant-design/icons';
 import uid from 'uid';
 import swal from 'sweetalert';
+import _ from 'lodash';
 import Purchase, { PurchaseItem } from '../../models/Purchase';
 import OverallInfo from '../Item/InformationSteps/overallInfo';
 import PurchaseItems from '../Item/InformationSteps/purchaseItems';
-import _ from 'lodash';
 
 const { Step } = Steps;
 
