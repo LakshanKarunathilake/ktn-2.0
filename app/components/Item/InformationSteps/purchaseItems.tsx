@@ -119,7 +119,8 @@ const PurchaseItems = (props: {
   const addPurchaseItem = () => {
     if (
       purchase.items &&
-      purchase.items.findIndex(record => record.partNumber === partNumber)
+      purchase.items.findIndex(record => record.partNumber === partNumber) ===
+        -1
     ) {
       updateForm('items', [
         ...purchase.items,
