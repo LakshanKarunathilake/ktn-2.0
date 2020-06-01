@@ -7,6 +7,7 @@ import _ from 'lodash';
 import Purchase, { PurchaseItem } from '../../models/Purchase';
 import OverallInfo from '../Item/InformationSteps/overallInfo';
 import PurchaseItems from '../Item/InformationSteps/purchaseItems';
+import PurchaseService from '../../services/purchase';
 
 const { Step } = Steps;
 
@@ -41,6 +42,9 @@ const NewPurchase = (props: {
 
   const purchaseAction = () => {
     console.log('purchase', purchase);
+    const { invoiceNo, date, total, items } = purchase;
+    const purchaseValues = {number:invoiceNo,date,total};
+    PurchaseService.addPurchase();
   };
 
   const next = () => {
