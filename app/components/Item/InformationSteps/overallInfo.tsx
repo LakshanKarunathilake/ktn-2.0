@@ -17,14 +17,14 @@ const OverallInfo = (props: {
   updateForm: (key: string, value: string) => void;
 }) => {
   const { updateForm, purchase } = props;
-  const [names, setNames] = useState<{ value: string }[]>([]);
+  const [names, setNames] = useState<{ key: string; value: string }[]>([]);
   const [allNames, setAllNames] = useState<{ value: string }[]>([]);
 
   useEffect(() => {
     PurchaseService.getSuppliers()
       .then((val: any) => {
         const updated = val.map((v: any) => {
-          return { value: v.name };
+          return { key: v.id, value: v.name };
         });
         setNames(updated);
         return setAllNames(updated);
