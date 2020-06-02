@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Purchase = sequelize.define(
     'Purchase',
     {
-      number: { type: DataTypes.STRING, allowNull: false, unique: true },
+      invoiceNo: { type: DataTypes.STRING, allowNull: false, unique: true },
       date: { type: DataTypes.DATEONLY, allowNull: false },
       total: { type: DataTypes.DECIMAL(10, 2), allowNull: false },
       lastUpdated: {
