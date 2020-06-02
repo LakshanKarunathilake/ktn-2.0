@@ -1,7 +1,8 @@
 export default interface Purchase {
   invoiceNo: string;
-  date: Date;
+  date?: Date;
   total: string;
+  companyId: { key: string; value: string };
   items: Array<PurchaseItem>;
   returns?: Array<any>;
 }
