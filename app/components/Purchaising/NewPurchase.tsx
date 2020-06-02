@@ -17,7 +17,6 @@ const NewPurchase = (props: {
 }) => {
   const [invoiceItemTotal, setInvoiceItemTotal] = useState();
 
-  console.log('new purch', props);
   const { purchase, updateForm } = props;
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -41,10 +40,14 @@ const NewPurchase = (props: {
   });
 
   const purchaseAction = () => {
-    console.log('purchase', purchase);
-    const { invoiceNo, date, total, items } = purchase;
-    const purchaseValues = {number:invoiceNo,date,total};
-    PurchaseService.addPurchase();
+    PurchaseService.addPurchase(purchase)
+      .then(() => {
+        return swal('Success', 'Purchase Record Added successful');
+      })
+      .catch((e: any) => {
+        console.log('Error occured', e);
+        return swal('Error', 'Purchase Record Adding failure', 'error');
+      });
   };
 
   const next = () => {
@@ -69,6 +72,7 @@ const NewPurchase = (props: {
       icon: <SolutionOutlined />
     }
   ];
+  console.log('pr',purchase);
   return (
     <>
       <Steps current={currentStep}>
