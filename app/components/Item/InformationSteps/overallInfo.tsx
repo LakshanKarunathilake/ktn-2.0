@@ -5,6 +5,7 @@ import PurchaseService from '../../../services/purchase';
 
 const { Item } = Form;
 const { Title, Text } = Typography;
+const { Option } = AutoComplete;
 
 const hints = {
   company: 'Select company from the list',
@@ -14,11 +15,13 @@ const hints = {
 
 const OverallInfo = (props: {
   purchase: Purchase;
-  updateForm: (key: string, value: string) => void;
+  updateForm: (key: string, value: any) => void;
 }) => {
   const { updateForm, purchase } = props;
   const [names, setNames] = useState<{ key: string; value: string }[]>([]);
-  const [allNames, setAllNames] = useState<{ value: string }[]>([]);
+  const [allNames, setAllNames] = useState<{ key: string; value: string }[]>(
+    []
+  );
 
   useEffect(() => {
     PurchaseService.getSuppliers()
@@ -43,6 +46,8 @@ const OverallInfo = (props: {
       );
     }
   };
+
+  console.log(purchase);
 
   return (
     <>
@@ -69,15 +74,23 @@ const OverallInfo = (props: {
       <Form>
         <Item help={hints.company} style={{ marginBottom: 20 }}>
           <AutoComplete
-            options={names}
             style={{ width: '40vw' }}
             onSearch={onItemSearch}
             placeholder="Retailer Name"
-            value={purchase.invoiceNo}
+            value={purchase.companyId ? purchase.companyId.value : undefined}
             onChange={(value: string) => {
-              updateForm('invoiceNo', value);
+              const record = names.find(
+                (companyRecord: any) => companyRecord.value === value
+              );
+              updateForm('companyId', record);
             }}
-          />
+          >
+            {names.map((companyDetail: { key: string; value: string }) => (
+              <Option key={companyDetail.key} value={companyDetail.value}>
+                {companyDetail.value}
+              </Option>
+            ))}
+          </AutoComplete>
         </Item>
         <Item help={hints.billPrice} style={{ marginBottom: 20 }}>
           <Input
