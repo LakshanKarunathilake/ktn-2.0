@@ -4,12 +4,11 @@ import Purchase from '../models/Purchase';
 
 const purchase = (
   state: Purchase = {
-    date: '',
-    discount: 0.0,
+    date: undefined,
     invoiceNo: '',
-    total: 0.0,
+    total: '0.0',
     items: [],
-    returns: []
+    companyId: { key: '', value: '' }
   },
   action: AnyAction
 ) => {
