@@ -5,7 +5,6 @@ import { inventoryStoreType } from '../reducers/types';
 import Home from '../components/Home/Home';
 
 function mapStateToProps(state: inventoryStoreType) {
-  console.log('login state', state);
   const { loginForm } = state;
   return {
     loginForm
