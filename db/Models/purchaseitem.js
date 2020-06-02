@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: 'CASCADE'
     });
     PurchaseItem.belongsTo(models.Purchase, {
-      foreignKey: 'billNumber',
+      foreignKey: 'invoiceNo',
       onUpdate: 'CASCADE'
     });
   };
