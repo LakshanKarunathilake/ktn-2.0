@@ -29,13 +29,13 @@ module.exports = {
           as: 'itemCode'
         }
       },
-      billNumber: {
+      invoiceNo: {
         type: Sequelize.STRING,
         onUpdate: 'CASCADE',
         references: {
           model: 'Purchases',
-          key: 'number',
-          as: 'billNumber'
+          key: 'invoiceNo',
+          as: 'invoiceNo'
         }
       }
     });

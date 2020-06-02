@@ -7,7 +7,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      number: { type: Sequelize.STRING, allowNull: false, unique: true },
+      invoiceNo: { type: Sequelize.STRING, allowNull: false, unique: true },
       date: { type: Sequelize.DATEONLY, allowNull: false },
       total: { type: Sequelize.DECIMAL(10, 2), allowNull: false },
       createdAt: {
