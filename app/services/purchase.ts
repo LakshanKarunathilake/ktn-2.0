@@ -6,7 +6,7 @@ const sequelize = DBService.getSequelize();
 
 class PurchaseService {
   static getSuppliers() {
-    return sequelize.model('Company').findAll({ attributes: ['name'] });
+    return sequelize.model('Company').findAll({ attributes: ['name','id'] });
   }
 
   static getSupplier(name: string) {
