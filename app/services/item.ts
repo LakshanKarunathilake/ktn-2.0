@@ -1,10 +1,9 @@
 import { QueryTypes } from 'sequelize';
 import swal from 'sweetalert';
-import DBService from './db';
 import { ItemAddView } from '../models/User';
 import GeneralCache from '../cache/GeneralCache';
-
-const sequelize = DBService.getSequelize();
+import Item from '../../db/Models/item';
+import { sequelize } from '../../db/Models/index';
 
 class ItemService {
   static getPartNumbers(value: string) {
@@ -27,7 +26,7 @@ class ItemService {
 
   static async getItem(code: string) {
     try {
-      const item = await sequelize.model('Item').findOne({
+      const item = await Item.findOne({
         where: {
           code
         }
@@ -85,7 +84,7 @@ class ItemService {
 
   static async getLatestItems() {
     try {
-      const items = await sequelize.model('Item').findAll({
+      const items = await Item.findAll({
         limit: 3,
         order: [['updatedAt', 'DESC']]
       });

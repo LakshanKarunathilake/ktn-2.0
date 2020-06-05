@@ -13,7 +13,7 @@ import { app, BrowserWindow } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
-import * as models from '../db/Models/index';
+import { initializeDB } from '../db/Models/index';
 import { database } from '../inventory.json';
 
 export default class AppUpdater {
@@ -50,14 +50,14 @@ const installExtensions = async () => {
 
 const createWindow = async () => {
   // Set global variable to access sequelize
-  global.sharedObject = {
-    sequelize: models.sequelize
-  };
+  // global.sharedObject = {
+  //   sequelize: models.sequelize
+  // };
+  const db = initializeDB();
 
   // Sync queries
   if (database.runQueries) {
-    models.sequelize
-      .sync({ force: true })
+    db.sync({ force: true })
       // eslint-disable-next-line promise/always-return
       .then(() => {
         console.log('======Database Sync Successful=====');

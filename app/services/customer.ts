@@ -1,9 +1,6 @@
 import { QueryTypes } from 'sequelize';
-import DBService from './db';
 import swal from 'sweetalert';
 import { Customer } from '../models/Customer';
-
-const sequelize = DBService.getSequelize();
 
 export default class CustomerService {
   static getCustomers(name: string) {

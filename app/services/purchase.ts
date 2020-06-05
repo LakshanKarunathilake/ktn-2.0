@@ -1,16 +1,18 @@
-import DBService from './db';
+import Sequelize from 'sequelize';
+import moment from 'moment';
 import Purchase, { Supplier } from '../models/Purchase';
 import GeneralCache from '../cache/GeneralCache';
-
-const sequelize = DBService.getSequelize();
+import Company from '../../db/Models/company';
+import PurchaseTable from '../../db/Models/purchase';
+import { sequelize } from '../../db/Models/index';
 
 class PurchaseService {
   static getSuppliers() {
-    return sequelize.model('Company').findAll({ attributes: ['name','id'] });
+    return Company.findAll({ attributes: ['name', 'id'] });
   }
 
   static getSupplier(name: string) {
-    return sequelize.model('Company').findOne({
+    return Company.findOne({
       where: {
         name
       }
@@ -18,7 +20,7 @@ class PurchaseService {
   }
 
   static addSupplier(supplier: Supplier) {
-    return sequelize.model('Company').create({ ...supplier });
+    return Company.create({ ...supplier });
   }
 
   static async editSupplier(supplier: any, supplierValues: Supplier) {
@@ -31,14 +33,28 @@ class PurchaseService {
     return supplier.save();
   }
 
-  static addPurchase(purchase: Purchase) {
-    return sequelize.model('Purchase').create({
-      purchase
-    });
+  static async addPurchase(purchase: Purchase) {
+    const { invoiceNo, companyId, items, date, total } = purchase;
+    const purchaseOverallData = {
+      invoiceNo,
+      companyId: companyId.key,
+      date: moment(date).format('YYYY-MM-DD HH:mm:ss'),
+      total
+    };
+    console.log(purchaseOverallData);
+    try {
+      await sequelize.transaction(async (t: Sequelize.Transaction) => {
+        await sequelize
+          .model('Purchase')
+          .create({ ...purchaseOverallData }, { transaction: t });
+      });
+    } catch (e) {
+      console.log('error', e);
+    }
   }
 
   static addPurchaseItems(purchase: Purchase) {
-    return sequelize.model('Purchase').bulkCreate([purchase.items]);
+    return PurchaseTable.bulkCreate([purchase.items]);
   }
 }
 

@@ -1,9 +1,7 @@
 import crypto from 'crypto';
 import { LoginView, SignupView } from '../models/User';
 import GeneralCache from '../cache/GeneralCache';
-import DBService from './db';
-
-const sequelize = DBService.getSequelize();
+import User from '../../db/Models/user';
 
 class UserService {
   static createUser(user: SignupView) {
@@ -11,17 +9,13 @@ class UserService {
     const password = crypto
       .pbkdf2Sync(user.password, salt, 1000, 64, `sha512`)
       .toString(`hex`);
-    return sequelize
-      .model('User')
-      .create({ name: user.username, password, type: 1, salt });
+    return User.create({ name: user.username, password, type: 1, salt });
   }
 
   static loginUser(user: LoginView) {
     const { password, username } = user;
     return new Promise((resolve, reject) => {
-      sequelize
-        .model('User')
-        .findOne({ where: { name: username } })
+      User.findOne({ where: { name: username } })
         .then(user => {
           GeneralCache.addToCache('user', { name: username });
           console.log('user', password, user.get('password'));
